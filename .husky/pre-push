@@ -1,0 +1,5 @@
+
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx format && npx lint:fs && npx lint && npx build
