@@ -1,44 +1,22 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
-import Button from '@mui/material/Button'
+import UserStartPage from './pages/onStartPageUser'
+import GuestStartPage from './pages/onStartPageGuest'
+/* import Button from '@mui/material/Button' */
 
 function App() {
+    const user = false
     return (
         <div className="App">
             <h1>Welcome to Instagram!</h1>
-            <Button variant="contained">Start</Button>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="about" element={<About />} />
+                <Route
+                    path="/"
+                    element={user ? <UserStartPage /> : <GuestStartPage />}
+                />
             </Routes>
         </div>
     )
 }
 
 export default App
-
-function Home() {
-    return (
-        <>
-            <main>
-                <h2>Welcome to the homepage!</h2>
-            </main>
-            <nav>
-                <Link to="/about">About</Link>
-            </nav>
-        </>
-    )
-}
-
-function About() {
-    return (
-        <>
-            <main>
-                <h2>About</h2>
-            </main>
-            <nav>
-                <Link to="/">Home</Link>
-            </nav>
-        </>
-    )
-}
