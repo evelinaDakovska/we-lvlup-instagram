@@ -1,17 +1,48 @@
-import { createStore } from "redux";
+/* eslint-disable default-param-last */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const counterReducer = (state = { counter = 0 }, action) => {
-  if (action.type === "increment") {
-    return { counter: state.counter + 1 };
-  }
+const initialCounterState = { counter: 0, showCounter: true };
 
-  if (action.type === "dencrement") {
-    return { counter: state.counter - 1 };
-  }
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: initialCounterState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter += action.payload;
+    },
+    toggle(state) {
+      state.showCounter = !state.showCounter;
+      console.log(state.showCounter);
+    },
+  },
+});
 
-  return state;
-};
+const initialAuthState = { isAuth: false };
 
-const store = createStore(counterReducer);
+const authSlice = createSlice({
+  name: "auth",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuth = true;
+    },
+    logout(state) {
+      state.isAuth = false;
+    },
+  },
+});
 
+const store = configureStore({
+  reducer: { counter: counterSlice.reducer, auth: authSlice.reducer },
+});
+
+export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
 export default store;

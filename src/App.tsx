@@ -1,22 +1,24 @@
-import { Routes, Route } from 'react-router-dom'
-import './App.css'
-import UserStartPage from './pages/onStartPageUser'
-import GuestStartPage from './pages/onStartPageGuest'
+/* import { Routes } from "react-router-dom";
+ */
+import { RootStateOrAny, useSelector } from "react-redux";
+import "./App.css";
+import UserStartPage from "./pages/onStartPageUser";
+import GuestStartPage from "./pages/onStartPageGuest";
 /* import Button from '@mui/material/Button' */
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
-    const user = false
-    return (
-        <div className="App">
-            <h1>Welcome to Instagram!</h1>
-            <Routes>
-                <Route
-                    path="/"
-                    element={user ? <UserStartPage /> : <GuestStartPage />}
-                />
-            </Routes>
-        </div>
-    )
+  /*   const user = false; */
+  const isAuth = useSelector((state: RootStateOrAny) => state.auth.isAuth);
+
+  return (
+    <div className="App">
+      <h1>Welcome to Instagram!</h1>
+
+      {isAuth && <UserStartPage />}
+      {!isAuth && <GuestStartPage />}
+    </div>
+  );
 }
 
-export default App
+export default App;
