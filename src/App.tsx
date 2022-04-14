@@ -15,8 +15,8 @@ function App() {
     <div className="App">
       <h1>Welcome to Instagram!</h1>
 
-      {isAuth && <UserStartPage />}
-      {!isAuth && <GuestStartPage />}
+      {!isAuth && <UserStartPage />}
+      {isAuth && <GuestStartPage />}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
 
-import { counterActions, authActions } from "@store";
+import { counterActions } from "../store/counter";
+import { authActions } from "../store/auth";
 
 function GuestStartPage(): JSX.Element {
   const dispatch = useDispatch();
