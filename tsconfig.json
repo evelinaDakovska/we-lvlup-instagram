@@ -14,18 +14,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "incremental": true,
+    "paths": {
+      "@store": ["src/store"],
+      "@components": ["src/components"],
+      "@hooks": ["src/hooks"],
+      "@pages": ["src/pages"],
+      "@styles": ["src/styles"],
+      "@types": ["src/types"],
+      "@utils": ["src/utils"]
+    }
   },
-  "include": ["src"],
-  "baseUrl": ".",
-  "paths": {
-    "@components/*": ["src/components/*"],
-    "@hooks/*": ["src/hooks/*"],
-    "@pages/*": ["src/pages/*"],
-    "@store/*": ["src/store/*"],
-    "@styles/*": ["src/styles/*"],
-    "@types/*": ["src/types/*"],
-    "@utils/*": ["src/utils/*"]
-  },
-  "incremental": true
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

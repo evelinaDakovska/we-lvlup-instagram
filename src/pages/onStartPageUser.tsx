@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { authActions } from "../store/auth";
+import { authActions } from "store/auth";
 
 function UserStartPage(): JSX.Element {
   const dispatch = useDispatch();
