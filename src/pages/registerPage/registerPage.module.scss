@@ -1,0 +1,18 @@
+.regContainer {
+  width: 70%;
+  * {
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 5%;
+  }
+  h1 {
+    text-align: center;
+  }
+}
+
+.mailContainer {
+  display: flex;
+  width: 100%;
+  overflow: scroll;
+  padding-bottom: 10px;
+}
