@@ -74,7 +74,10 @@
         "ignorePropertyModificationsFor": ["state"]
       }
     ],
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "react/jsx-no-bind": 0,
+    "react/destructuring-assignment": 0,
+    "no-nested-ternary": "off"
   },
   "settings": {
     "import/resolver": {
