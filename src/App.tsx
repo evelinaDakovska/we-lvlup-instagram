@@ -1,10 +1,12 @@
 /* import { Routes } from "react-router-dom";
  */
 import { RootStateOrAny, useSelector } from "react-redux";
-import "./App.css";
-import UserStartPage from "./pages/onStartPageUser";
-import GuestStartPage from "./pages/onStartPageGuest";
-/* import Button from '@mui/material/Button' */
+import { Routes, Route } from "react-router-dom";
+
+import "./App.scss";
+import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
+import GuestStartPage from "./pages/onStartPageGuest/onStartPageGuest";
+import Register from "./pages/registerPage/registerPage";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
@@ -13,10 +15,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Welcome to Instagram!</h1>
-
-      {!isAuth && <UserStartPage />}
-      {isAuth && <GuestStartPage />}
+      <Routes>
+        {isAuth ? (
+          <Route path="/" element={<UserStartPage />} />
+        ) : (
+          <Route path="/" element={<GuestStartPage />} />
+        )}
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
