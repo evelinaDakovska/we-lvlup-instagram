@@ -2,13 +2,25 @@
 
 import { counterActions } from "store/counter";
 import { authActions } from "store/auth"; */
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Divider, TextField, Link } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
-
+import { signIn } from "../../utils/userSettings/userAuth";
 import styles from "./onStartPageGuest.module.scss";
 
 function GuestStartPage(): JSX.Element {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  function loginFunc() {
+    signIn(email, password);
+    navigate("/");
+  }
+
   return (
     <div className={styles.loginContainer}>
       <img
@@ -32,8 +44,21 @@ function GuestStartPage(): JSX.Element {
       </div>
       <Divider className={styles.orDivider}>or</Divider>
       <form action="" className={styles.loginForm}>
-        <TextField label="Username" margin="dense" />
-        <TextField label="Password" margin="dense" />
+        <TextField
+          label="Username"
+          margin="dense"
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        />
+        <TextField
+          label="Password"
+          margin="dense"
+          type="password"
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }}
+        />
         <Link
           href="/"
           underline="hover"
@@ -41,7 +66,9 @@ function GuestStartPage(): JSX.Element {
         >
           Forgot password?
         </Link>
-        <Button variant="contained">Log In</Button>
+        <Button variant="contained" onClick={loginFunc}>
+          Log In
+        </Button>
       </form>
       <div className={styles.signUp}>
         Don&apos;t have an account?{" "}

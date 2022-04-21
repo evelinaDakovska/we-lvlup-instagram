@@ -4,20 +4,20 @@ import { useState } from "react";
 import styles from "./registerPage.module.scss";
 
 function SetNames(props: any): JSX.Element {
-  const [fName, setFName] = useState("");
-  const [lName, setLName] = useState("");
+  const [firstName, setFName] = useState("");
+  const [lastName, setLName] = useState("");
 
   function nextPage() {
     props.onNextStep(props.navigationStep + 1);
-    props.setUserInformation({ fName, lName });
+    props.setUserInformation({ firstName, lastName });
   }
 
   function validateData() {
-    if (!fName) {
+    if (!firstName) {
       alert("Please Enter First Name");
       return;
     }
-    if (!lName) {
+    if (!lastName) {
       alert("Please Enter Last Name");
       return;
     }
@@ -28,7 +28,7 @@ function SetNames(props: any): JSX.Element {
   return (
     <form className={styles.firstPartRegister}>
       <TextField
-        id="fName"
+        id="firstName"
         label="Enter first name"
         variant="outlined"
         onChange={(event) => {
@@ -36,7 +36,7 @@ function SetNames(props: any): JSX.Element {
         }}
       />
       <TextField
-        id="lName"
+        id="lastName"
         label="Enter last name"
         variant="outlined"
         onChange={(event) => {

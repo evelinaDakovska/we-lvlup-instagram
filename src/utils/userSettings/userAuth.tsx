@@ -1,28 +1,26 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
-import { login, AuthState } from "../../store/auth";
+import { login, AuthState, logout } from "../../store/auth";
 import { dispatch } from "../../store/index";
 
-function onSignIn(userData: Omit<AuthState, "password">) {
-  console.log("signed in");
-  dispatch(login(userData));
-}
-
 export function signUp(userData: AuthState) {
-  const { email, password, fName, lName } = userData;
+  const { email, password, firstName, lastName } = userData;
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential: any) => {
-      const userID = userCredential.user.uid;
-      await setDoc(doc(db, "users", userID), {
+      const userId = userCredential.user.uid;
+      await setDoc(doc(db, "users", userId), {
         email,
-        firstName: fName,
-        lastName: lName,
+        firstName,
+        lastName,
       });
-      const updatedUserData = { ...userData, userID };
+      const updatedUserData = { ...userData, userId };
 
-      onSignIn(updatedUserData);
+      dispatch(login(updatedUserData));
     })
     .catch((error: any) => {
       console.log(error.message);
@@ -31,24 +29,26 @@ export function signUp(userData: AuthState) {
     });
 }
 
-/* function signIn(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const userID = userCredential.user.uid;
-      onSignIn(userID);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-}
- */
-/* export function signOut() {
+export function signOutFunc() {
   signOut(auth)
     .then(() => {
-      // Sign-out successful.
+      dispatch(logout());
+    })
+    .catch((error: any) => {
+      console.log(error.message);
+    });
+}
+
+export function signIn(email: string, password: string) {
+  signInWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const userId = userCredential.user.uid;
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      const data = { ...docSnap.data(), userId };
+      dispatch(login(data));
     })
     .catch((error) => {
-      // An error happened.
+      console.log(error.message);
     });
-} */
+}

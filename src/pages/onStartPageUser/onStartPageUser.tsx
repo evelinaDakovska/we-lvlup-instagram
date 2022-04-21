@@ -1,20 +1,24 @@
-/* import { Button } from "@mui/material";
-import { signOut } from "../../utils/userSettings/userAuth";
- */
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { signOutFunc } from "../../utils/userSettings/userAuth";
+
 /* import { useDispatch } from "react-redux";
 import { authActions } from "store/auth"; */
 
 function UserStartPage(): JSX.Element {
-  /*   function onSignOut() {
-    console.log("signed out");
-  } */
+  const navigate = useNavigate();
+
+  function onSignOut() {
+    navigate("/");
+    signOutFunc();
+  }
 
   return (
     <div>
       <div>Welcome</div>
-      {/*       <Button variant="contained" onClick={onSignOut()}>
+      <Button variant="contained" onClick={onSignOut}>
         LogOut
-      </Button> */}
+      </Button>
     </div>
   );
 }

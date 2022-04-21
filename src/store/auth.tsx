@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface AuthState {
   isAuth?: boolean;
   email: string;
-  userID?: string;
-  fName: string;
-  lName: string;
+  userId?: string;
+  firstName: string;
+  lastName: string;
   avatar: string;
   password: string;
 }
@@ -13,9 +13,9 @@ export interface AuthState {
 const initialAuthState: Omit<AuthState, "password"> = {
   isAuth: false,
   email: "",
-  userID: "",
-  fName: "",
-  lName: "",
+  userId: "",
+  firstName: "",
+  lastName: "",
   avatar: "",
 };
 
@@ -26,17 +26,17 @@ const authSlice = createSlice({
     login(state, userData) {
       state.isAuth = true;
       state.email = userData.payload.email;
-      state.userID = userData.payload.userID;
-      state.fName = userData.payload.fName;
-      state.lName = userData.payload.lName;
+      state.userId = userData.payload.userId;
+      state.firstName = userData.payload.firstName;
+      state.lastName = userData.payload.lastName;
       state.avatar = userData.payload.avatar;
     },
     logout(state) {
       state.isAuth = false;
       state.email = "";
-      state.userID = "";
-      state.fName = "";
-      state.lName = "";
+      state.userId = "";
+      state.firstName = "";
+      state.lastName = "";
       state.avatar = "";
     },
   },

@@ -11,8 +11,8 @@ function RegisterPage(): JSX.Element {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
-    fName: "",
-    lName: "",
+    firstName: "",
+    lastName: "",
     avatar: "",
   });
 

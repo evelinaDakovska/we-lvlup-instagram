@@ -6,7 +6,7 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../../utils/firebaseConfig";
 import styles from "./registerPage.module.scss";
 
-function SetNames(props: any): JSX.Element {
+function SetAvatar(props: any): JSX.Element {
   const [avatars, setAvatars] = useState<string[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<any>();
 
@@ -28,9 +28,8 @@ function SetNames(props: any): JSX.Element {
         });
     };
     getAvatars();
-  }, []);
-
-  console.log(avatars);
+    console.log(avatars);
+  }, [avatars]);
 
   function nextPage() {
     props.onNextStep(props.navigationStep + 1);
@@ -60,4 +59,4 @@ function SetNames(props: any): JSX.Element {
   );
 }
 
-export default SetNames;
+export default SetAvatar;
