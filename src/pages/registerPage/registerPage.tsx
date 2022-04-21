@@ -4,6 +4,7 @@ import styles from "./registerPage.module.scss";
 import SetEmailPassword from "./setEmailPassword";
 import SetNames from "./setNames";
 import SetAvatar from "./setAvatar";
+import ConfirmData from "./ConfirmData";
 
 function RegisterPage(): JSX.Element {
   const [navigationStep, setNavigationStep] = useState(0);
@@ -51,13 +52,15 @@ function RegisterPage(): JSX.Element {
           userInfo={userInfo}
           setUserInformation={setUserInformation}
         />
-      ) : (
+      ) : navigationStep === 2 ? (
         <SetAvatar
           navigationStep={navigationStep}
           onNextStep={onNextStep}
           userInfo={userInfo}
           setUserInformation={setUserInformation}
         />
+      ) : (
+        <ConfirmData userInfo={userInfo} />
       )}
     </div>
   );

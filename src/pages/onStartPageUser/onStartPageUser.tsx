@@ -1,23 +1,21 @@
+/* import { Button } from "@mui/material";
+import { signOut } from "../../utils/userSettings/userAuth";
+ */
 /* import { useDispatch } from "react-redux";
 import { authActions } from "store/auth"; */
 
 function UserStartPage(): JSX.Element {
-  /*   const dispatch = useDispatch(); */
-
-  const loginHandler = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
-    /*    dispatch(authActions.login()); */
-  };
+  /*   function onSignOut() {
+    console.log("signed out");
+  } */
 
   return (
-    <form>
-      <input type="email" placeholder="Enter email" />
-      <input type="password" placeholder="Enter password" />
-      <button type="button" onClick={loginHandler}>
-        Login
-      </button>
-    </form>
+    <div>
+      <div>Welcome</div>
+      {/*       <Button variant="contained" onClick={onSignOut()}>
+        LogOut
+      </Button> */}
+    </div>
   );
 }
 

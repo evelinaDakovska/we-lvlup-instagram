@@ -12,6 +12,19 @@ function SetNames(props: any): JSX.Element {
     props.setUserInformation({ fName, lName });
   }
 
+  function validateData() {
+    if (!fName) {
+      alert("Please Enter First Name");
+      return;
+    }
+    if (!lName) {
+      alert("Please Enter Last Name");
+      return;
+    }
+
+    nextPage();
+  }
+
   return (
     <form className={styles.firstPartRegister}>
       <TextField
@@ -30,7 +43,7 @@ function SetNames(props: any): JSX.Element {
           setLName(event.target.value);
         }}
       />
-      <Button variant="contained" type="submit" onClick={nextPage}>
+      <Button variant="contained" onClick={validateData}>
         Next
       </Button>
     </form>

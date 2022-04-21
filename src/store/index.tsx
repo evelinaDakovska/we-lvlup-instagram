@@ -10,5 +10,5 @@ const store = configureStore({
     auth: authReducer,
   },
 });
-
+export const { dispatch } = store;
 export default store;

@@ -12,6 +12,27 @@ function SetEmailPassword(props: any): JSX.Element {
     props.setUserInformation({ email, password });
   }
 
+  function validateData() {
+    if (!email) {
+      alert("Please Enter Email ID");
+      return;
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      alert("Invalid email address");
+      return;
+    }
+    if (!password) {
+      alert("Please Enter Password");
+      return;
+    }
+    if (password.length < 6) {
+      alert("Your password must contain at least 6 characters");
+      return;
+    }
+
+    nextPage();
+  }
+
   function removeDomain(domain: string) {
     const index = email.indexOf("@");
     let newValue = email;
@@ -66,7 +87,7 @@ function SetEmailPassword(props: any): JSX.Element {
           setPassword(event.target.value);
         }}
       />
-      <Button variant="contained" onClick={nextPage}>
+      <Button variant="contained" onClick={validateData}>
         Next
       </Button>
     </form>

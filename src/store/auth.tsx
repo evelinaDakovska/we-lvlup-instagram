@@ -1,9 +1,19 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialAuthState = {
+export interface AuthState {
+  isAuth?: boolean;
+  email: string;
+  userID?: string;
+  fName: string;
+  lName: string;
+  avatar: string;
+  password: string;
+}
+
+const initialAuthState: Omit<AuthState, "password"> = {
   isAuth: false,
   email: "",
-  uid: "",
+  userID: "",
   fName: "",
   lName: "",
   avatar: "",
@@ -13,29 +23,18 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {
-    login(
-      state,
-      {
-        payload: { email, uid, fName, lName, avatar },
-      }: PayloadAction<{
-        email: string;
-        uid: string;
-        fName: string;
-        lName: string;
-        avatar: "";
-      }>
-    ) {
+    login(state, userData) {
       state.isAuth = true;
-      state.email = email;
-      state.uid = uid;
-      state.fName = fName;
-      state.lName = lName;
-      state.avatar = avatar;
+      state.email = userData.payload.email;
+      state.userID = userData.payload.userID;
+      state.fName = userData.payload.fName;
+      state.lName = userData.payload.lName;
+      state.avatar = userData.payload.avatar;
     },
     logout(state) {
       state.isAuth = false;
       state.email = "";
-      state.uid = "";
+      state.userID = "";
       state.fName = "";
       state.lName = "";
       state.avatar = "";
