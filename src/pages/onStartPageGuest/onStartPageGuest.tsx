@@ -7,7 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Divider, TextField, Link } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
-import { signIn } from "../../utils/userSettings/userAuth";
+import {
+  signIn,
+  signInGoogle,
+  signInFacebook,
+} from "../../utils/userSettings/userAuth";
 import styles from "./onStartPageGuest.module.scss";
 
 function GuestStartPage(): JSX.Element {
@@ -31,12 +35,14 @@ function GuestStartPage(): JSX.Element {
       <div className={styles.alternativeLogin}>
         <Button
           variant="contained"
+          onClick={signInFacebook}
           startIcon={<FacebookIcon className={styles.icons} />}
         >
           Continue with Facebook
         </Button>
         <Button
           variant="contained"
+          onClick={signInGoogle}
           startIcon={<GoogleIcon className={styles.icons} />}
         >
           Continue with Google

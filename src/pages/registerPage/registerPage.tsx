@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Button } from "@mui/material";
 
 import styles from "./registerPage.module.scss";
 import SetEmailPassword from "./setEmailPassword";
@@ -28,16 +30,19 @@ function RegisterPage(): JSX.Element {
   return (
     <div className={styles.regContainer}>
       <h1>Register</h1>
-      <button
+      <Button
         type="button"
+        variant="text"
+        className={styles.backButton}
+        title="Go back"
         onClick={() => {
           if (navigationStep > 0) {
             setNavigationStep(navigationStep - 1);
           }
         }}
       >
-        Back
-      </button>
+        <ArrowBackIcon />
+      </Button>
       {navigationStep === 0 ? (
         <SetEmailPassword
           navigationStep={navigationStep}

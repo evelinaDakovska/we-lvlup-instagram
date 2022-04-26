@@ -16,39 +16,43 @@ function SetAvatar(props: any): JSX.Element {
       const allAvatars: Array<string> = [];
       listAll(listRef)
         .then((response) => {
-          response.items.forEach((avatar) => {
+          response.items.forEach((avatar, i) => {
             getDownloadURL(avatar).then((url) => {
               allAvatars.push(url);
+
+              if (i === response.items.length - 1) {
+                setAvatars(allAvatars);
+              }
             });
           });
-          setAvatars(allAvatars);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     getAvatars();
-    console.log(avatars);
-  }, [avatars]);
+  }, []);
 
   function nextPage() {
+    console.log(selectedAvatar);
+
     props.onNextStep(props.navigationStep + 1);
 
     props.setUserInformation({ avatar: selectedAvatar });
   }
 
   return (
-    <div className={styles.hiddenradio}>
+    <div className={styles.avatarsContainer}>
       {avatars.map((current) => {
         return (
-          <label>
-            <img src={current} alt="avatar" />
+          <label className={styles.hiddenRadio} key={current}>
             <input
               type="radio"
               name="test"
-              value="small"
+              value={current}
               onChange={(event) => setSelectedAvatar(event.target.value)}
             />
+            <img src={current} alt="avatar" />
           </label>
         );
       })}
