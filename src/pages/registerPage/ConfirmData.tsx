@@ -8,7 +8,15 @@ function ConfirmData(props: any): JSX.Element {
   function confirmData() {
     const userData = { ...props.userInfo };
     navigate("/");
-    signUp(userData);
+    if (props.uploadedAvatar) {
+      signUp(userData, props.uploadedAvatar);
+    } else {
+      signUp(userData, undefined);
+    }
+  }
+
+  if (props.uploadedAvatar) {
+    console.log(props.uploadedAvatar);
   }
 
   return (

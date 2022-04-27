@@ -9,7 +9,8 @@ import styles from "./registerPage.module.scss";
 function SetAvatar(props: any): JSX.Element {
   const [avatars, setAvatars] = useState<string[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<string>();
-  const [uploadedAvatar, setUploadedAvatar] = useState<string>();
+  const [uploadedAvatar, setUploadedAvatar] = useState<File>();
+  const [uploadedURL, setUploadedURL] = useState<string>();
 
   useEffect(() => {
     if (props.userInfo.avatar) {
@@ -21,28 +22,26 @@ function SetAvatar(props: any): JSX.Element {
   const listRef = ref(storage, "/default avatars");
   useEffect(() => {
     const getAvatars = async (): Promise<void> => {
-      const allAvatars: Array<string> = [];
-      listAll(listRef)
-        .then((response) => {
-          response.items.forEach((avatar, i) => {
-            getDownloadURL(avatar).then((url) => {
-              allAvatars.push(url);
-              if (i === response.items.length - 1) {
-                setAvatars(allAvatars);
-              }
-            });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const allAvatars: Array<Promise<string>> = [];
+      const response = await listAll(listRef);
+      response.items.forEach((avatar) => {
+        const url = getDownloadURL(avatar);
+        allAvatars.push(url);
+      });
+      const promise = await Promise.all(allAvatars);
+      setAvatars(promise);
     };
     getAvatars();
   }, []);
 
   function nextPage() {
+    if (!selectedAvatar) {
+      alert("Please select profile picture");
+      return;
+    }
     props.onNextStep(props.navigationStep + 1);
     props.setUserInformation({ avatar: selectedAvatar });
+    props.setUploadedAvatar(uploadedAvatar);
   }
 
   return (
@@ -62,17 +61,17 @@ function SetAvatar(props: any): JSX.Element {
           );
         })}
         {uploadedAvatar && (
-          <label key={uploadedAvatar} className={styles.hiddenRadio}>
+          <label key={uploadedURL} className={styles.hiddenRadio}>
             <input
               type="radio"
               name="test"
-              value={uploadedAvatar}
+              value={uploadedURL}
               onChange={(event) => setSelectedAvatar(event.target.value)}
-              key={uploadedAvatar}
+              key={uploadedURL}
             />
             <img
               className={styles.uploadedAvatar}
-              src={uploadedAvatar}
+              src={uploadedURL}
               alt="avatar"
             />
           </label>
@@ -87,7 +86,8 @@ function SetAvatar(props: any): JSX.Element {
             id={styles.uploadInput}
             onChange={(event) => {
               if (event.target.files) {
-                setUploadedAvatar(URL.createObjectURL(event.target.files[0]));
+                setUploadedAvatar(event.target.files[0]);
+                setUploadedURL(URL.createObjectURL(event.target.files[0]));
               }
             }}
           />

@@ -3,7 +3,6 @@
 import { counterActions } from "store/counter";
 import { authActions } from "store/auth"; */
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button, Divider, TextField, Link } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -18,11 +17,8 @@ function GuestStartPage(): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
-
   function loginFunc() {
     signIn(email, password);
-    navigate("/");
   }
 
   return (

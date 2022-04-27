@@ -1,18 +1,42 @@
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import SendIcon from "@mui/icons-material/Send";
-import styles from "./Header.module.scss";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 function Header(): JSX.Element {
+  const navigate = useNavigate();
+
   return (
-    <div className={styles.headerContainer}>
-      <div>
-        <CameraAltIcon />
-      </div>
-      <div>Instagram</div>
-      <div>
-        <SendIcon />
-      </div>
-    </div>
+    <Box sx={{ width: "100%" }}>
+      <AppBar
+        sx={{
+          backgroundColor: "white",
+          color: "black",
+          position: "relative",
+          width: "100%",
+        }}
+        position="fixed"
+      >
+        <Toolbar>
+          <CameraAltIcon onClick={() => navigate("/upload")} />
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
+          >
+            <img
+              src={`${process.env.PUBLIC_URL} /title-img.png`}
+              alt="logo"
+              style={{ width: "150px" }}
+            />
+          </Typography>
+          <SendIcon />
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
 

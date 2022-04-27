@@ -10,6 +10,7 @@ import ConfirmData from "./ConfirmData";
 
 function RegisterPage(): JSX.Element {
   const [navigationStep, setNavigationStep] = useState(0);
+  const [uploadedAvatar, setUploadedAvatar] = useState();
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -63,9 +64,10 @@ function RegisterPage(): JSX.Element {
           onNextStep={onNextStep}
           userInfo={userInfo}
           setUserInformation={setUserInformation}
+          setUploadedAvatar={setUploadedAvatar}
         />
       ) : (
-        <ConfirmData userInfo={userInfo} />
+        <ConfirmData userInfo={userInfo} uploadedAvatar={uploadedAvatar} />
       )}
     </div>
   );

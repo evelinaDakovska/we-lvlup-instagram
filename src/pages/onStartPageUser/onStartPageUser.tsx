@@ -1,27 +1,40 @@
-import { Button } from "@mui/material";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
-import { useNavigate } from "react-router-dom";
-import { signOutFunc } from "../../utils/userSettings/userAuth";
-
-/* import { useDispatch } from "react-redux";
-import { authActions } from "store/auth"; */
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../utils/firebaseConfig";
+import styles from "./onStartPageUser.module.scss";
 
 function UserStartPage(): JSX.Element {
-  const navigate = useNavigate();
+  const [posts, setPosts] = useState<any>([]);
 
-  function onSignOut() {
-    navigate("/");
-    signOutFunc();
-  }
+  useEffect(() => {
+    const getPosts = async (): Promise<void> => {
+      const allPosts: Array<any> = [];
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        allPosts.push(data);
+      });
+      const promise = await Promise.all(allPosts);
+      setPosts(promise);
+    };
+    getPosts();
+  }, []);
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <Header />
-      <div>Welcome</div>
-      <Button variant="contained" onClick={onSignOut}>
-        LogOut
-      </Button>
+      <div className={styles.contentContainer}>
+        {posts.map((current: any) => {
+          return (
+            <>
+              <h5>{current.description}</h5>
+              <img src={current.url} alt="post" className={styles.image} />
+            </>
+          );
+        })}
+      </div>
       <Footer />
     </div>
   );
