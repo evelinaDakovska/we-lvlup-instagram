@@ -1,10 +1,19 @@
 import { TextField, Button, Chip } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./registerPage.module.scss";
 
 function SetEmailPassword(props: any): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (props.userInfo.email) {
+      setEmail(props.userInfo.email);
+    }
+    if (props.userInfo.password) {
+      setPassword(props.userInfo.password);
+    }
+  }, []);
 
   function nextPage() {
     props.onNextStep(props.navigationStep + 1);
@@ -33,7 +42,7 @@ function SetEmailPassword(props: any): JSX.Element {
     nextPage();
   }
 
-  function removeDomain(domain: string) {
+  function changeDomain(domain: string) {
     const index = email.indexOf("@");
     let newValue = email;
     if (index >= 0) {
@@ -60,21 +69,21 @@ function SetEmailPassword(props: any): JSX.Element {
           label="@gmail.com"
           variant="outlined"
           onClick={() => {
-            removeDomain("@gmail.com");
+            changeDomain("@gmail.com");
           }}
         />
         <Chip
           label="@abv.bg"
           variant="outlined"
           onClick={() => {
-            removeDomain("@abv.bg");
+            changeDomain("@abv.bg");
           }}
         />
         <Chip
           label="@accedia.com"
           variant="outlined"
           onClick={() => {
-            removeDomain("@accedia.com");
+            changeDomain("@accedia.com");
           }}
         />
       </div>
@@ -82,6 +91,7 @@ function SetEmailPassword(props: any): JSX.Element {
         id="outlined-password-input"
         label="Password"
         type="password"
+        value={password}
         autoComplete="current-password"
         onChange={(event) => {
           setPassword(event.target.value);

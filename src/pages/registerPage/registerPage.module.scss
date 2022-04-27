@@ -53,3 +53,16 @@
 .avatarContainer {
   display: flex;
 }
+
+#uploadInput {
+  display: none;
+}
+
+.uploadedAvatar,
+.avatarPrev {
+  border-radius: 50%;
+}
+
+.btnContainer {
+  display: flex;
+}

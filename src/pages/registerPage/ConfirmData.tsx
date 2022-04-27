@@ -6,7 +6,6 @@ import styles from "./registerPage.module.scss";
 function ConfirmData(props: any): JSX.Element {
   const navigate = useNavigate();
   function confirmData() {
-    console.log("confirmed");
     const userData = { ...props.userInfo };
     navigate("/");
     signUp(userData);

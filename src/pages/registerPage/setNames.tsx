@@ -1,11 +1,20 @@
 import { TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import styles from "./registerPage.module.scss";
 
 function SetNames(props: any): JSX.Element {
   const [firstName, setFName] = useState("");
   const [lastName, setLName] = useState("");
+
+  useEffect(() => {
+    if (props.userInfo.firstName) {
+      setFName(props.userInfo.firstName);
+    }
+    if (props.userInfo.lastName) {
+      setLName(props.userInfo.lastName);
+    }
+  }, []);
 
   function nextPage() {
     props.onNextStep(props.navigationStep + 1);
@@ -30,6 +39,7 @@ function SetNames(props: any): JSX.Element {
       <TextField
         id="firstName"
         label="Enter first name"
+        value={firstName}
         variant="outlined"
         onChange={(event) => {
           setFName(event.target.value);
@@ -38,6 +48,7 @@ function SetNames(props: any): JSX.Element {
       <TextField
         id="lastName"
         label="Enter last name"
+        value={lastName}
         variant="outlined"
         onChange={(event) => {
           setLName(event.target.value);

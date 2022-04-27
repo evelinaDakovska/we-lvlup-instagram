@@ -1,4 +1,6 @@
 import { Button } from "@mui/material";
+import Footer from "components/Footer/Footer";
+import Header from "components/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
 
@@ -15,10 +17,12 @@ function UserStartPage(): JSX.Element {
 
   return (
     <div>
+      <Header />
       <div>Welcome</div>
       <Button variant="contained" onClick={onSignOut}>
         LogOut
       </Button>
+      <Footer />
     </div>
   );
 }

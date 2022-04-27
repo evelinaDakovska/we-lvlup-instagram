@@ -8,7 +8,15 @@ import styles from "./registerPage.module.scss";
 
 function SetAvatar(props: any): JSX.Element {
   const [avatars, setAvatars] = useState<string[]>([]);
-  const [selectedAvatar, setSelectedAvatar] = useState<any>();
+  const [selectedAvatar, setSelectedAvatar] = useState<string>();
+  const [uploadedAvatar, setUploadedAvatar] = useState<string>();
+
+  useEffect(() => {
+    if (props.userInfo.avatar) {
+      setSelectedAvatar(props.userInfo.avatar);
+      setUploadedAvatar(props.userInfo.avatar);
+    }
+  }, []);
 
   const listRef = ref(storage, "/default avatars");
   useEffect(() => {
@@ -19,7 +27,6 @@ function SetAvatar(props: any): JSX.Element {
           response.items.forEach((avatar, i) => {
             getDownloadURL(avatar).then((url) => {
               allAvatars.push(url);
-
               if (i === response.items.length - 1) {
                 setAvatars(allAvatars);
               }
@@ -34,31 +41,61 @@ function SetAvatar(props: any): JSX.Element {
   }, []);
 
   function nextPage() {
-    console.log(selectedAvatar);
-
     props.onNextStep(props.navigationStep + 1);
-
     props.setUserInformation({ avatar: selectedAvatar });
   }
 
   return (
-    <div className={styles.avatarsContainer}>
-      {avatars.map((current) => {
-        return (
-          <label className={styles.hiddenRadio} key={current}>
+    <div>
+      <div className={styles.avatarsContainer}>
+        {avatars.map((current) => {
+          return (
+            <label key={current} className={styles.hiddenRadio}>
+              <input
+                type="radio"
+                name="test"
+                value={current}
+                onChange={(event) => setSelectedAvatar(event.target.value)}
+              />
+              <img src={current} alt="avatar" />
+            </label>
+          );
+        })}
+        {uploadedAvatar && (
+          <label key={uploadedAvatar} className={styles.hiddenRadio}>
             <input
               type="radio"
               name="test"
-              value={current}
+              value={uploadedAvatar}
               onChange={(event) => setSelectedAvatar(event.target.value)}
+              key={uploadedAvatar}
             />
-            <img src={current} alt="avatar" />
+            <img
+              className={styles.uploadedAvatar}
+              src={uploadedAvatar}
+              alt="avatar"
+            />
           </label>
-        );
-      })}
-      <Button variant="contained" onClick={nextPage}>
-        Next
-      </Button>
+        )}
+      </div>
+      <div className={styles.btnContainer}>
+        <label>
+          Upload avatar
+          <input
+            type="file"
+            name="myAvatar"
+            id={styles.uploadInput}
+            onChange={(event) => {
+              if (event.target.files) {
+                setUploadedAvatar(URL.createObjectURL(event.target.files[0]));
+              }
+            }}
+          />
+        </label>
+        <Button variant="contained" onClick={nextPage}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
