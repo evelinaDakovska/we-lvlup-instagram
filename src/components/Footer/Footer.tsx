@@ -26,12 +26,8 @@ function Footer(): JSX.Element {
         <IconButton>
           <SearchIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
-        <IconButton>
-          <AddCircleOutlineIcon
-            onClick={() => navigate("/upload")}
-            fontSize="medium"
-            sx={{ color: "#000000" }}
-          />
+        <IconButton onClick={() => navigate("/upload")}>
+          <AddCircleOutlineIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
         <IconButton>
           <FavoriteBorderIcon fontSize="medium" sx={{ color: "#000000" }} />

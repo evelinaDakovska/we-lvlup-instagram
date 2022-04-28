@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
+import { RootStateOrAny, useSelector } from "react-redux";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { addSinglePost } from "utils/postSettings/postSettings";
@@ -12,10 +13,24 @@ function UploadPage(): JSX.Element {
   const [uploadedPhoto, setUploadedPhoto] = useState<File>();
   const [description, setDescription] = useState<string>();
   const navigate = useNavigate();
+  const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
+  const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
+  const firstName = useSelector(
+    (state: RootStateOrAny) => state.auth.firstName
+  );
+  const lastName = useSelector((state: RootStateOrAny) => state.auth.lastName);
 
-  function uploadHandler() {
+  async function uploadHandler() {
     if (uploadedPhoto && description && uploadedPhotoURL) {
-      addSinglePost(uploadedPhoto, description, uploadedPhotoURL);
+      await addSinglePost(
+        uploadedPhoto,
+        description,
+        uploadedPhotoURL,
+        userAvatar,
+        userId,
+        firstName,
+        lastName
+      );
     }
     navigate("/");
   }

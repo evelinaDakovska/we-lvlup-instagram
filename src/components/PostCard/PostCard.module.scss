@@ -1,0 +1,25 @@
+.userData,
+.description {
+  display: flex;
+  align-items: center;
+  * {
+    padding-right: 5%;
+  }
+}
+
+.singlePost,
+.image {
+  width: 100%;
+}
+
+.description {
+  margin-top: 5%;
+  font-size: smaller;
+  span {
+    font-weight: bold;
+  }
+}
+.singlePost {
+  margin-bottom: 5%;
+  background-color: white;
+}

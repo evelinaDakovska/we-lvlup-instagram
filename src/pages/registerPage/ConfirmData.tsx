@@ -15,10 +15,6 @@ function ConfirmData(props: any): JSX.Element {
     }
   }
 
-  if (props.uploadedAvatar) {
-    console.log(props.uploadedAvatar);
-  }
-
   return (
     <div className={styles.verifyContainer}>
       <div>Email: {props.userInfo.email}</div>

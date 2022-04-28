@@ -1,7 +1,8 @@
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import PostCard from "components/PostCard/PostCard";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./onStartPageUser.module.scss";
 
@@ -11,9 +12,12 @@ function UserStartPage(): JSX.Element {
   useEffect(() => {
     const getPosts = async (): Promise<void> => {
       const allPosts: Array<any> = [];
-      const querySnapshot = await getDocs(collection(db, "posts"));
+      const postsRef = collection(db, "posts");
+      const docRef = query(postsRef, orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(docRef);
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
+        let data = doc.data();
+        data = { ...data, id: doc.id };
         allPosts.push(data);
       });
       const promise = await Promise.all(allPosts);
@@ -27,12 +31,7 @@ function UserStartPage(): JSX.Element {
       <Header />
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
-          return (
-            <>
-              <h5>{current.description}</h5>
-              <img src={current.url} alt="post" className={styles.image} />
-            </>
-          );
+          return <PostCard postData={current} key={current.id} />;
         })}
       </div>
       <Footer />

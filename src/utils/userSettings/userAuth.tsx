@@ -37,10 +37,14 @@ export function signUp(userData: AuthState, uploadedAvatar: File | undefined) {
       }
 
       await setDoc(doc(db, "users", userId), {
+        userId,
         email,
         firstName,
         lastName,
         avatar: fileURL,
+        followers: [],
+        followed: [],
+        postsCount: 0,
       });
       const updatedUserData = { ...userData, avatar: fileURL, userId };
       dispatch(login(updatedUserData));
@@ -74,11 +78,15 @@ export function signIn(email: string, password: string) {
     });
 }
 
-async function onSignInWithProvider(result: any, credential: any) {
+async function onSignInWithProvider(
+  result: any,
+  credential: any,
+  facebook: boolean
+) {
   // eslint-disable-next-line no-unused-vars
   const token = credential?.accessToken;
   const { user } = result;
-  const userID = user.uid;
+  const userId = user.uid;
   const { email } = user;
   const fullName = user.displayName?.split(" ");
   let firstName;
@@ -89,20 +97,28 @@ async function onSignInWithProvider(result: any, credential: any) {
     // eslint-disable-next-line prefer-destructuring
     lastName = fullName[1];
   }
-  const avatar = user.providerData[0].photoURL;
 
-  const userRef = doc(db, "users", userID);
+  let avatar = user.providerData[0].photoURL;
+  if (facebook) {
+    avatar = `${avatar}?height=500&access_token=${token}`;
+  }
+
+  const userRef = doc(db, "users", userId);
   const docSnap = await getDoc(userRef);
   if (!docSnap.exists()) {
     await setDoc(userRef, {
+      userId,
       email,
       firstName,
       lastName,
       avatar,
+      followers: [],
+      followed: [],
+      postsCount: 0,
     });
   }
 
-  dispatch(login({ email, password: "", firstName, lastName, avatar }));
+  dispatch(login({ email, password: "", firstName, lastName, avatar, userId }));
 }
 
 export function signInGoogle() {
@@ -110,7 +126,7 @@ export function signInGoogle() {
   signInWithPopup(auth, provider)
     .then(async (result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      onSignInWithProvider(result, credential);
+      onSignInWithProvider(result, credential, false);
     })
     .catch((error) => {
       console.log(error.message);
@@ -122,7 +138,7 @@ export function signInFacebook() {
   signInWithPopup(auth, provider)
     .then((result) => {
       const credential = FacebookAuthProvider.credentialFromResult(result);
-      onSignInWithProvider(result, credential);
+      onSignInWithProvider(result, credential, true);
     })
     .catch((error) => {
       console.log(error.message);

@@ -77,7 +77,8 @@
     "no-plusplus": "off",
     "react/jsx-no-bind": 0,
     "react/destructuring-assignment": 0,
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   "settings": {
     "import/resolver": {
