@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { RootStateOrAny, useSelector } from "react-redux";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
@@ -9,9 +10,10 @@ import { addSinglePost } from "utils/postSettings/postSettings";
 import styles from "./uploadPage.module.scss";
 
 function UploadPage(): JSX.Element {
-  const [uploadedPhotoURL, setUploadedPhotoURL] = useState<string>();
+  const [uploadedPhotoURL, setUploadedPhotoURL] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File>();
   const [description, setDescription] = useState<string>();
+  const [disable, setDisable] = useState<boolean>(false);
   const navigate = useNavigate();
   const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
@@ -19,8 +21,11 @@ function UploadPage(): JSX.Element {
     (state: RootStateOrAny) => state.auth.firstName
   );
   const lastName = useSelector((state: RootStateOrAny) => state.auth.lastName);
+  const [loading, setLoading] = useState(false);
 
   async function uploadHandler() {
+    setLoading(true);
+    setDisable(true);
     if (uploadedPhoto && description && uploadedPhotoURL) {
       await addSinglePost(
         uploadedPhoto,
@@ -56,13 +61,16 @@ function UploadPage(): JSX.Element {
                 setDescription(event.target.value);
               }}
             />
-            <Button
-              variant="contained"
+            <LoadingButton
               onClick={uploadHandler}
+              loading={loading}
+              disabled={disable}
+              loadingIndicator="Loading..."
+              variant="contained"
               sx={{ width: "60%" }}
             >
               Upload
-            </Button>
+            </LoadingButton>
           </>
         )}
         <Button variant="contained" sx={{ width: "60%" }}>
