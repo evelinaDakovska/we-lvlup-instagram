@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 function Footer(): JSX.Element {
   const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
+  const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
   const navigate = useNavigate();
 
   return (
@@ -32,7 +33,10 @@ function Footer(): JSX.Element {
         <IconButton>
           <FavoriteBorderIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
-        <IconButton onClick={() => navigate("/profile")} sx={{ p: 0 }}>
+        <IconButton
+          onClick={() => navigate(`/profile/${userId}`)}
+          sx={{ p: 0 }}
+        >
           <Avatar src={userAvatar} alt="User avatar" />
         </IconButton>
       </Toolbar>

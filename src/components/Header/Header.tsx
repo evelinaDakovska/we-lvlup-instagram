@@ -25,6 +25,7 @@ function Header(): JSX.Element {
           <Typography
             variant="h6"
             component="div"
+            onClick={() => navigate("/")}
             sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
           >
             <img
