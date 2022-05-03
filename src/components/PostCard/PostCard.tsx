@@ -14,8 +14,8 @@ import styles from "./PostCard.module.scss";
 function PostCard(props: any): JSX.Element {
   const navigate = useNavigate();
   const [likedPost, setLikedPost] = useState<boolean>(false);
-  const [dislikedPost, setDislikedPost] = useState<boolean>(false);
-  const current = props.postData;
+/*   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
+ */  const current = props.postData;
   const { postId } = props;
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
