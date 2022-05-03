@@ -21,6 +21,7 @@ function DetailPage(): JSX.Element {
   const [postData, setPostData] = useState<any>([]);
   const [postOwner, setPostOwner] = useState<string>();
   const [likedPost, setLikedPost] = useState<boolean>(false);
+
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
   );
