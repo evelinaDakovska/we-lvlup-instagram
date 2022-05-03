@@ -31,7 +31,9 @@ function UserStartPage(): JSX.Element {
       <Header />
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
-          return <PostCard postData={current} key={current.id} />;
+          return (
+            <PostCard postData={current} postId={current.id} key={current.id} />
+          );
         })}
       </div>
       <Footer />

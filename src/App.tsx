@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
 import ProfilePage from "pages/ProfilePage/ProfilePage";
+import DetailPage from "pages/DetailPage/DetailPage";
 import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
 import GuestStartPage from "./pages/onStartPageGuest/onStartPageGuest";
 import Register from "./pages/registerPage/registerPage";
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<UserStartPage />} />
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/profile/:profileUserId" element={<ProfilePage />} />
+            <Route path="/details/:postId" element={<DetailPage />} />
           </>
         ) : (
           <>

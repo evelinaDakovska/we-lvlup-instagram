@@ -11,6 +11,7 @@ import styles from "./PostCard.module.scss";
 function PostCard(props: any): JSX.Element {
   const navigate = useNavigate();
   const current = props.postData;
+  const { postId } = props;
 
   return (
     <div className={styles.singlePost}>
@@ -25,7 +26,12 @@ function PostCard(props: any): JSX.Element {
           {current.userNames}
         </h4>
       </div>
-      <img src={current.url} alt="post" className={styles.image} />
+      <img
+        src={current.url}
+        alt="post"
+        className={styles.image}
+        onClick={() => navigate(`/details/${postId}`)}
+      />
       <div className={styles.options}>
         <FavoriteBorderIcon />
         <ChatBubbleOutlineIcon />

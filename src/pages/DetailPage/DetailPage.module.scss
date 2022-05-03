@@ -1,0 +1,42 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.userData,
+.description {
+  display: flex;
+  align-items: center;
+  * {
+    margin-right: 5%;
+  }
+}
+
+.singlePost,
+.image {
+  width: 100%;
+}
+
+.description {
+  margin-top: 3%;
+  font-size: smaller;
+  span {
+    font-weight: bold;
+  }
+}
+.singlePost {
+  margin-bottom: 5%;
+  padding-bottom: 5%;
+  background-color: white;
+  border-radius: 3%;
+}
+
+.options {
+  margin-top: 3%;
+}
+
+.userData {
+  padding-left: 2%;
+}
