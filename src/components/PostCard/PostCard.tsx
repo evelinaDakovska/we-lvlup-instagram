@@ -28,7 +28,7 @@ function PostCard(props: any): JSX.Element {
   const postOwner = current.userId;
 
   useEffect(() => {
-    if (window.location.href !== "http://localhost:3000/") {
+    if (window.location.pathname.includes("/details")) {
       setIsHomePage(false);
     }
   }, []);
