@@ -3,9 +3,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import SendIcon from "@mui/icons-material/Send";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Footer from "components/Footer/Footer";
@@ -13,14 +11,16 @@ import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
 import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { RootStateOrAny, useSelector } from "react-redux";
+import { likeHandler } from "utils/postSettings/likeHandler";
 import { db } from "../../utils/firebaseConfig";
-import styles from "./DetailPage.module.scss";
+import styles from "./detailPage.module.scss";
 
 function DetailPage(): JSX.Element {
   const { postId } = useParams();
   const navigate = useNavigate();
   const [postData, setPostData] = useState<any>([]);
   const [postOwner, setPostOwner] = useState<string>();
+  const [likedPost, setLikedPost] = useState<boolean>(false);
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
   );
@@ -57,6 +57,13 @@ function DetailPage(): JSX.Element {
     }
   }
 
+  function likeBtnHandler(action: string) {
+    console.log(action);
+
+    setLikedPost((prevValue) => !prevValue);
+    likeHandler(postId!, currentUserId);
+  }
+
   return (
     <div className={styles.pageContainer}>
       <Header />
@@ -71,18 +78,28 @@ function DetailPage(): JSX.Element {
           <h4 onClick={() => navigate(`/profile/${postData.userId}`)}>
             {postData.userNames}
           </h4>
+        </div>
+        <img src={postData.url} alt="post" className={styles.image} />
+        <div className={styles.options}>
+          <div>
+            <Tooltip title="Like post">
+              <FavoriteBorderIcon
+                sx={likedPost ? { color: "red" } : null}
+                onClick={() => likeBtnHandler("like")}
+              />
+            </Tooltip>
+            <Tooltip title="Dislike post">
+              <HeartBrokenIcon
+                sx={likedPost ? { color: "red" } : null}
+                onClick={() => likeBtnHandler("dislike")}
+              />
+            </Tooltip>
+          </div>
           {postOwner === currentUserId ? (
             <Tooltip title="Delete post">
               <DeleteIcon onClick={deletePost} />
             </Tooltip>
           ) : null}
-        </div>
-        <img src={postData.url} alt="post" className={styles.image} />
-        <div className={styles.options}>
-          <FavoriteBorderIcon />
-          <ChatBubbleOutlineIcon />
-          <SendIcon />
-          <BookmarkBorderIcon />
         </div>
         <div className={styles.description}>
           <span>{postData.userNames}</span>

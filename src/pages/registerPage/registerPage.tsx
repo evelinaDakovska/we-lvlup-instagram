@@ -6,7 +6,7 @@ import styles from "./registerPage.module.scss";
 import SetEmailPassword from "./setEmailPassword";
 import SetNames from "./setNames";
 import SetAvatar from "./setAvatar";
-import ConfirmData from "./ConfirmData";
+import ConfirmData from "./confirmData";
 
 function RegisterPage(): JSX.Element {
   const [navigationStep, setNavigationStep] = useState(0);

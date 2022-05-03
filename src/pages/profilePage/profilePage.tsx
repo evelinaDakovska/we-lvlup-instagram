@@ -8,7 +8,7 @@ import Header from "components/Header/Header";
 import PostCard from "components/PostCard/PostCard";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
-import styles from "./ProfilePage.module.scss";
+import styles from "./profilePage.module.scss";
 
 function ProfilePage(): JSX.Element {
   const [posts, setPosts] = useState<any>([]);

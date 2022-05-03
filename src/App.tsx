@@ -4,8 +4,8 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import DetailPage from "./pages/DetailPage/DetailPage";
+import ProfilePage from "./pages/profilePage/profilePage";
+import DetailPage from "./pages/detailPage/detailPage";
 import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
 import GuestStartPage from "./pages/onStartPageGuest/onStartPageGuest";
 import Register from "./pages/registerPage/registerPage";
