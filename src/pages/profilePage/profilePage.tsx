@@ -67,15 +67,17 @@ function ProfilePage(): JSX.Element {
       setUserData(docSnap.data());
       setFollowers(docSnap.data()?.followers);
       setFollowed(docSnap.data()?.followed);
-
-      if (followers.includes(currentUserId)) {
-        setIsFollowing(true);
-      }
     };
 
     getPosts();
     getUserData();
   }, [profileUserId]);
+
+  useEffect(() => {
+    if (followers.includes(currentUserId)) {
+      setIsFollowing(true);
+    }
+  }, [followers]);
 
   const navigate = useNavigate();
   function onSignOut() {
