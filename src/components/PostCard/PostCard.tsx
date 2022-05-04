@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Avatar from "@mui/material/Avatar";
@@ -20,6 +21,7 @@ function PostCard(props: any): JSX.Element {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
   const current = props.postData;
+  const fileType = current.fileMeta;
   // eslint-disable-next-line prefer-destructuring
   const postId = props.postId;
   const currentUserId = useSelector(
@@ -72,15 +74,28 @@ function PostCard(props: any): JSX.Element {
           {current.userNames}
         </h4>
       </div>
-      <img
-        src={current.url}
-        alt="post"
-        className={styles.image}
-        onClick={() => {
-          // eslint-disable-next-line no-unused-expressions
-          isHomePage ? navigate(`/details/${postId}`) : null;
-        }}
-      />
+      {!fileType.includes("video") ? (
+        <img
+          src={current.url}
+          alt="post"
+          className={styles.image}
+          onClick={() => {
+            // eslint-disable-next-line no-unused-expressions
+            isHomePage ? navigate(`/details/${postId}`) : null;
+          }}
+        />
+      ) : (
+        <video
+          className={styles.image}
+          controls
+          onClick={() => {
+            // eslint-disable-next-line no-unused-expressions
+            isHomePage ? navigate(`/details/${postId}`) : null;
+          }}
+        >
+          <source src={current.url} />
+        </video>
+      )}
       <div className={styles.options}>
         <div>
           <Tooltip title="Like post">

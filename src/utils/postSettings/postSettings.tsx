@@ -11,6 +11,7 @@ import {
   uploadBytes,
   uploadBytesResumable,
   getDownloadURL,
+  getMetadata,
 } from "firebase/storage";
 import { db, storage } from "../firebaseConfig";
 
@@ -26,11 +27,19 @@ export async function addSinglePost(
   let fileURL;
   const postRef = ref(storage, url);
   const uploadTask = uploadBytesResumable(postRef, photo);
+  let fileMeta;
 
   await uploadBytes(postRef, photo);
   await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
     fileURL = downloadURL;
   });
+  await getMetadata(uploadTask.snapshot.ref)
+    .then((metadata) => {
+      fileMeta = metadata.contentType;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
   await addDoc(collection(db, "posts"), {
     url: fileURL,
@@ -43,6 +52,7 @@ export async function addSinglePost(
     commentsCount: 0,
     comments: [],
     timestamp: serverTimestamp(),
+    fileMeta,
   });
 
   const userRef = doc(db, "users", userId);

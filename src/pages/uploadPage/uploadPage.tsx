@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,11 +47,17 @@ function UploadPage(): JSX.Element {
       <div className={styles.contentContainer}>
         {uploadedPhotoURL && (
           <>
-            <img
-              className={styles.uploadedPhoto}
-              src={uploadedPhotoURL}
-              alt="avatar"
-            />
+            {!uploadedPhoto!.type.includes("video") ? (
+              <img
+                className={styles.uploadedPhoto}
+                src={uploadedPhotoURL}
+                alt="avatar"
+              />
+            ) : (
+              <video className={styles.uploadedPhoto} controls>
+                <source src={uploadedPhotoURL} />
+              </video>
+            )}
             <TextField
               label="Description"
               id="description"
