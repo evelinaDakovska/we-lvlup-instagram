@@ -1,7 +1,16 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  where,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import { RootStateOrAny, useSelector } from "react-redux";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
@@ -12,8 +21,10 @@ import styles from "./profilePage.module.scss";
 
 function ProfilePage(): JSX.Element {
   const [posts, setPosts] = useState<any>([]);
-  /*   const [userId, setUserId] = useState<string>("");
-   */ const { profileUserId } = useParams();
+  const [userData, setUserData] = useState<any>({});
+  const [followers, setFollowers] = useState<any>([]);
+  const [followed, setFollowed] = useState<any>([]);
+  const { profileUserId } = useParams();
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
   );
@@ -36,16 +47,31 @@ function ProfilePage(): JSX.Element {
         where("userId", "==", userId)
       );
       const querySnapshot = await getDocs(docRef);
-      querySnapshot.forEach((doc) => {
-        let data = doc.data();
-        data = { ...data, id: doc.id };
+      querySnapshot.forEach((post) => {
+        let data = post.data();
+        data = { ...data, id: post.id };
         allPosts.push(data);
       });
       const promise = await Promise.all(allPosts);
       setPosts(promise);
     };
+
+    const getUserData = async (): Promise<void> => {
+      const userRef = doc(db, "users", userId);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+        setFollowers(docSnap.data().followers);
+        setFollowed(docSnap.data().followed);
+      } else {
+        console.log("No such document!");
+      }
+    };
+
     getPosts();
-  }, []);
+    getUserData();
+  }, [profileUserId]);
 
   const navigate = useNavigate();
   function onSignOut() {
@@ -56,12 +82,33 @@ function ProfilePage(): JSX.Element {
   return (
     <div className={styles.pageContainer}>
       <Header />
-      <div>Welcome</div>
-      {profileUserId === currentUserId ? (
-        <Button variant="contained" onClick={onSignOut}>
-          LogOut
-        </Button>
-      ) : null}
+      <div className={styles.userData}>
+        <img src={userData.avatar} alt="avatar" className={styles.avatar} />
+        <div>
+          <span style={{ fontWeight: "bold" }}>
+            {userData.firstName} {userData.lastName}
+          </span>
+          <br />
+          {userData.firstName} has{" "}
+          <span style={{ fontWeight: "bold" }}>{userData.postsCount}</span>{" "}
+          posts
+          <br />
+          <span style={{ fontWeight: "bold" }}>{followers.length}</span> people
+          follow {userData.firstName}
+          <br />
+          {userData.firstName} follows:{" "}
+          <span style={{ fontWeight: "bold" }}>{followed.length}</span> people
+        </div>
+        {profileUserId === currentUserId ? (
+          <Button
+            variant="contained"
+            onClick={onSignOut}
+            sx={{ width: "40px", height: "40px", minWidth: "0", padding: "0" }}
+          >
+            <LogoutIcon />
+          </Button>
+        ) : null}
+      </div>
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
           return (
