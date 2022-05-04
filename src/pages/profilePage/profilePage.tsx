@@ -11,10 +11,13 @@ import {
 } from "firebase/firestore";
 import { RootStateOrAny, useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import Tooltip from "@mui/material/Tooltip";
 import { Button } from "@mui/material";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import PostCard from "components/PostCard/PostCard";
+import { follow } from "utils/userSettings/follow";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./profilePage.module.scss";
@@ -24,6 +27,7 @@ function ProfilePage(): JSX.Element {
   const [userData, setUserData] = useState<any>({});
   const [followers, setFollowers] = useState<any>([]);
   const [followed, setFollowed] = useState<any>([]);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const { profileUserId } = useParams();
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
@@ -60,12 +64,12 @@ function ProfilePage(): JSX.Element {
       const userRef = doc(db, "users", userId);
       const docSnap = await getDoc(userRef);
 
-      if (docSnap.exists()) {
-        setUserData(docSnap.data());
-        setFollowers(docSnap.data().followers);
-        setFollowed(docSnap.data().followed);
-      } else {
-        console.log("No such document!");
+      setUserData(docSnap.data());
+      setFollowers(docSnap.data()?.followers);
+      setFollowed(docSnap.data()?.followed);
+
+      if (followers.includes(currentUserId)) {
+        setIsFollowing(true);
       }
     };
 
@@ -77,6 +81,11 @@ function ProfilePage(): JSX.Element {
   function onSignOut() {
     navigate("/");
     signOutFunc();
+  }
+
+  function followHandler() {
+    setIsFollowing((prevValue) => !prevValue);
+    follow(currentUserId, profileUserId!);
   }
 
   return (
@@ -96,7 +105,7 @@ function ProfilePage(): JSX.Element {
           <span style={{ fontWeight: "bold" }}>{followers.length}</span> people
           follow {userData.firstName}
           <br />
-          {userData.firstName} follows:{" "}
+          {userData.firstName} follows{" "}
           <span style={{ fontWeight: "bold" }}>{followed.length}</span> people
         </div>
         {profileUserId === currentUserId ? (
@@ -107,7 +116,26 @@ function ProfilePage(): JSX.Element {
           >
             <LogoutIcon />
           </Button>
-        ) : null}
+        ) : (
+          <Tooltip
+            title={
+              isFollowing ? "Already following, wanna unfollow?" : "Follow"
+            }
+          >
+            <Button
+              variant={isFollowing ? "contained" : "outlined"}
+              onClick={followHandler}
+              sx={{
+                width: "40px",
+                height: "40px",
+                minWidth: "0",
+                padding: "0",
+              }}
+            >
+              <BookmarkIcon />
+            </Button>
+          </Tooltip>
+        )}
       </div>
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
