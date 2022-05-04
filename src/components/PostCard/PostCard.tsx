@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -33,6 +35,19 @@ function PostCard(props: any): JSX.Element {
     if (window.location.pathname.includes("/details")) {
       setIsHomePage(false);
     }
+    const isLiked = async (): Promise<void> => {
+      const postRef = doc(db, "posts", postId);
+      const postSnap = await getDoc(postRef);
+      const likesPost = postSnap.data()?.likes;
+      if (likesPost.includes(currentUserId)) {
+        setLikedPost(true);
+      }
+      const dislikesPost = postSnap.data()?.dislikes;
+      if (dislikesPost.includes(currentUserId)) {
+        setDislikedPost(true);
+      }
+    };
+    isLiked();
   }, []);
 
   function likeBtnHandler(action: string) {
@@ -80,24 +95,16 @@ function PostCard(props: any): JSX.Element {
           alt="post"
           className={styles.image}
           onClick={() => {
-            // eslint-disable-next-line no-unused-expressions
             isHomePage ? navigate(`/details/${postId}`) : null;
           }}
         />
       ) : (
-        <video
-          className={styles.image}
-          controls
-          onClick={() => {
-            // eslint-disable-next-line no-unused-expressions
-            isHomePage ? navigate(`/details/${postId}`) : null;
-          }}
-        >
+        <video className={styles.image} controls>
           <source src={current.url} />
         </video>
       )}
       <div className={styles.options}>
-        <div>
+        <div className={styles.options}>
           <Tooltip title="Like post">
             <FavoriteBorderIcon
               sx={likedPost ? { color: "red" } : null}
@@ -110,7 +117,11 @@ function PostCard(props: any): JSX.Element {
               onClick={() => likeBtnHandler("dislike")}
             />
           </Tooltip>
-          <ChatBubbleOutlineIcon />
+          <ChatBubbleOutlineIcon
+            onClick={() => {
+              isHomePage ? navigate(`/details/${postId}`) : null;
+            }}
+          />
         </div>
         {postOwner === currentUserId ? (
           <Tooltip title="Delete post">
@@ -118,6 +129,7 @@ function PostCard(props: any): JSX.Element {
           </Tooltip>
         ) : null}
       </div>
+      {!isHomePage ? <div>{current.likes?.length} likes</div> : null}
       <div className={styles.description}>
         <span>{current.userNames}</span>
         {current.description}

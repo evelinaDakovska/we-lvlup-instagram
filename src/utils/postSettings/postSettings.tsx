@@ -47,7 +47,7 @@ export async function addSinglePost(
     userId,
     userNames: `${firstName} ${lastName}`,
     userAvatar,
-    likesCount: 0,
+    dislikes: [],
     likes: [],
     commentsCount: 0,
     comments: [],

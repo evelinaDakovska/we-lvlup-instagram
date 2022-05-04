@@ -9,7 +9,7 @@ import styles from "./detailPage.module.scss";
 
 function DetailPage(): JSX.Element {
   const { postId } = useParams();
-  const [postData, setPostData] = useState<any>([]);
+  const [postData, setPostData] = useState<any>();
 
   useEffect(() => {
     const getPostData = async (): Promise<void> => {
@@ -30,7 +30,9 @@ function DetailPage(): JSX.Element {
   return (
     <div className={styles.pageContainer}>
       <Header />
-      <PostCard postData={postData} postId={postId} key={postId} />
+      {postData ? (
+        <PostCard postData={postData} postId={postId} key={postId} />
+      ) : null}
       <Footer />
     </div>
   );

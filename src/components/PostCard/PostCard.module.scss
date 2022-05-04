@@ -7,7 +7,10 @@
   }
 }
 
-.singlePost,
+.singlePost {
+  width: 95%;
+}
+
 .image {
   width: 100%;
 }
@@ -20,7 +23,7 @@
   }
 }
 .singlePost {
-  margin-bottom: 5%;
+  margin-bottom: 20%;
   padding-bottom: 5%;
   background-color: white;
   border-radius: 3%;

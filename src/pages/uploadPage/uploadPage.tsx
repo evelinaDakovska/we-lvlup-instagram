@@ -25,9 +25,9 @@ function UploadPage(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   async function uploadHandler() {
-    setLoading(true);
-    setDisable(true);
     if (uploadedPhoto && description && uploadedPhotoURL) {
+      setLoading(true);
+      setDisable(true);
       await addSinglePost(
         uploadedPhoto,
         description,
@@ -37,6 +37,9 @@ function UploadPage(): JSX.Element {
         firstName,
         lastName
       );
+    } else {
+      alert("Please add file and description");
+      return;
     }
     navigate("/");
   }
