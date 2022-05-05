@@ -56,7 +56,13 @@ function Stories(): JSX.Element {
 
   async function addNewStories() {
     setDisable(true);
-    await addSingleStory(uploadedStory!, userAvatar, userId, firstName);
+    await addSingleStory(
+      uploadedStory!,
+      userAvatar,
+      userId,
+      firstName,
+      uploadedStoryURL
+    );
     navigate(0);
   }
 

@@ -67,10 +67,11 @@ export async function addSingleStory(
   photo: File,
   userAvatar: string,
   userId: string,
-  firstName: string
+  firstName: string,
+  uploadedStoryURL: string
 ) {
   let fileURL;
-  const storyRef = ref(storage, userId);
+  const storyRef = ref(storage, uploadedStoryURL);
   const uploadTask = uploadBytesResumable(storyRef, photo);
   let fileMeta;
 
