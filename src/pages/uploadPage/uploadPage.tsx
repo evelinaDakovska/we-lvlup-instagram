@@ -83,7 +83,7 @@ function UploadPage(): JSX.Element {
             </LoadingButton>
           </>
         )}
-        <Button variant="contained" sx={{ width: "60%" }}>
+        <Button variant="text">
           <label>
             Select Photo
             <input

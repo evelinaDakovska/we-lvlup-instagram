@@ -3,6 +3,7 @@ import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import PostCard from "components/PostCard/PostCard";
+import Stories from "components/Stories/Stories";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./onStartPageUser.module.scss";
 
@@ -29,6 +30,7 @@ function UserStartPage(): JSX.Element {
   return (
     <div className={styles.pageContainer}>
       <Header />
+      <Stories />
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
           return (

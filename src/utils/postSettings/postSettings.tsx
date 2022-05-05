@@ -62,3 +62,37 @@ export async function addSinglePost(
     postsCount: userPosts,
   });
 }
+
+export async function addSingleStory(
+  photo: File,
+  userAvatar: string,
+  userId: string,
+  firstName: string
+) {
+  let fileURL;
+  const storyRef = ref(storage, userId);
+  const uploadTask = uploadBytesResumable(storyRef, photo);
+  let fileMeta;
+
+  await uploadBytes(storyRef, photo);
+  await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    fileURL = downloadURL;
+  });
+  await getMetadata(uploadTask.snapshot.ref)
+    .then((metadata) => {
+      fileMeta = metadata.contentType;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  await addDoc(collection(db, "stories"), {
+    url: fileURL,
+    userId,
+    userName: firstName,
+    userAvatar,
+    likes: [],
+    timestamp: Date.now(),
+    fileMeta,
+  });
+}
