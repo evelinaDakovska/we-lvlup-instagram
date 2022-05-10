@@ -4,18 +4,36 @@ import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
+import { useState, useEffect } from "react";
 import styles from "./Stories.module.scss";
 
 function UserStories(props: any): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
+  const [progress, setProgress] = useState(0);
   const data = props.storyData;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 0 : prevProgress + 5
+      );
+    }, 190);
+
+    return () => {
+      setProgress(0);
+      clearInterval(timer);
+    };
+  }, [openModal]);
 
   return (
     <div className={styles.storyContainer}>
       <IconButton
         onClick={() => {
-          setOpenModal((prev) => !prev);
+          setOpenModal(true);
+          setTimeout(() => {
+            setOpenModal(false);
+          }, 3000);
         }}
         sx={{
           p: 0,
@@ -50,6 +68,7 @@ function UserStories(props: any): JSX.Element {
               maxHeight: "70%",
             }}
           >
+            <LinearProgress variant="determinate" value={progress} />
             {!data!.fileMeta.includes("video") ? (
               <img
                 className={styles.uploadedPhoto}
