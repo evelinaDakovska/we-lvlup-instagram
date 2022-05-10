@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable max-len */
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -9,7 +11,7 @@ import {
   where,
   getDoc,
   doc,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { RootStateOrAny, useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -17,7 +19,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { Button } from "@mui/material";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
-import PostCard from "components/PostCard/PostCard";
 import { follow } from "utils/userSettings/follow";
 import { getUserNames } from "../../utils/postSettings/postSettings";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
@@ -210,7 +211,14 @@ function ProfilePage(): JSX.Element {
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
           return (
-            <PostCard postData={current} postId={current.id} key={current.id} />
+            <img
+              src={current.url}
+              alt="post"
+              key={current.id}
+              onClick={() => {
+                navigate(`/details/${current.id}`);
+              }}
+            />
           );
         })}
       </div>
