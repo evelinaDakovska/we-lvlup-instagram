@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore/lite";
 import { likeHandler } from "utils/postSettings/likeHandler";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./PostCard.module.scss";
@@ -148,13 +148,21 @@ function PostCard(props: any): JSX.Element {
         <div className={styles.options}>
           <Tooltip title={showLikes()} arrow placement="bottom-start">
             <FavoriteBorderIcon
-              sx={likedPost ? { color: "red" } : null}
+              sx={
+                likedPost
+                  ? { color: "red", cursor: "pointer" }
+                  : { cursor: "pointer" }
+              }
               onClick={() => likeBtnHandler("like")}
             />
           </Tooltip>
           <Tooltip title="Dislike post" arrow>
             <HeartBrokenIcon
-              sx={dislikedPost ? { color: "red" } : null}
+              sx={
+                dislikedPost
+                  ? { color: "red", cursor: "pointer" }
+                  : { cursor: "pointer" }
+              }
               onClick={() => likeBtnHandler("dislike")}
             />
           </Tooltip>

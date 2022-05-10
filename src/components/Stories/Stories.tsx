@@ -12,7 +12,13 @@ import AddIcon from "@mui/icons-material/Add";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  where,
+} from "firebase/firestore/lite";
 import { addSingleStory } from "utils/postSettings/postSettings";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";

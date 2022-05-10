@@ -7,7 +7,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import {
   ref,
   uploadBytes,

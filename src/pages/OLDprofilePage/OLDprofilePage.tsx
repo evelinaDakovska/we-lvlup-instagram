@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  where,
+} from "firebase/firestore/lite";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
@@ -34,7 +40,7 @@ function ProfilePage(): JSX.Element {
     };
     getPosts();
   }, []);
- 
+
   const navigate = useNavigate();
   function onSignOut() {
     navigate("/");
