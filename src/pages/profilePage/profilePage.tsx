@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   collection,
   getDocs,
@@ -18,6 +19,7 @@ import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import PostCard from "components/PostCard/PostCard";
 import { follow } from "utils/userSettings/follow";
+import { getUserNames } from "../../utils/postSettings/postSettings";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./profilePage.module.scss";
@@ -26,7 +28,9 @@ function ProfilePage(): JSX.Element {
   const [posts, setPosts] = useState<any>([]);
   const [userData, setUserData] = useState<any>({});
   const [followers, setFollowers] = useState<any>([]);
+  const [followersNames, setFollowersNames] = useState<any>([]);
   const [followed, setFollowed] = useState<any>([]);
+  const [followedNames, setFollowedNames] = useState<any>([]);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const { profileUserId } = useParams();
   const currentUserId = useSelector(
@@ -73,11 +77,34 @@ function ProfilePage(): JSX.Element {
     getUserData();
   }, [profileUserId]);
 
+  const didMount = useRef(false);
+
   useEffect(() => {
     if (followers.includes(currentUserId)) {
       setIsFollowing(true);
     }
+    if (didMount.current) {
+      const getFollowersNames = async (): Promise<void> => {
+        const usersFollowersLiked = await getUserNames(followers);
+        setFollowersNames(usersFollowersLiked);
+      };
+      getFollowersNames();
+    } else {
+      didMount.current = true;
+    }
   }, [followers]);
+
+  useEffect(() => {
+    if (didMount.current) {
+      const getFollowedNames = async (): Promise<void> => {
+        const usersFollowedLiked = await getUserNames(followed);
+        setFollowedNames(usersFollowedLiked);
+      };
+      getFollowedNames();
+    } else {
+      didMount.current = true;
+    }
+  }, [followed]);
 
   const navigate = useNavigate();
   function onSignOut() {
@@ -87,7 +114,41 @@ function ProfilePage(): JSX.Element {
 
   function followHandler() {
     setIsFollowing((prevValue) => !prevValue);
+    const followersArray = [...followers];
+    if (followers.includes(currentUserId)) {
+      const index = followers.indexOf(currentUserId);
+      followersArray.splice(index, 1);
+    } else {
+      followersArray.push(currentUserId);
+    }
+    setFollowers(followersArray);
     follow(currentUserId, profileUserId!);
+  }
+
+  function showFollowers() {
+    if (followersNames.length > 0) {
+      return (
+        <>
+          {followersNames.map((currentName: string) => {
+            return <div key={currentName}>{currentName}</div>;
+          })}
+        </>
+      );
+    }
+    return "";
+  }
+
+  function showFollowing() {
+    if (followedNames.length > 0) {
+      return (
+        <>
+          {followedNames.map((currentName: string) => {
+            return <div key={currentName}>{currentName}</div>;
+          })}
+        </>
+      );
+    }
+    return "";
   }
 
   return (
@@ -103,12 +164,19 @@ function ProfilePage(): JSX.Element {
           {userData.firstName} has{" "}
           <span style={{ fontWeight: "bold" }}>{userData.postsCount}</span>{" "}
           posts
-          <br />
-          <span style={{ fontWeight: "bold" }}>{followers.length}</span> people
-          follow {userData.firstName}
-          <br />
-          {userData.firstName} follows{" "}
-          <span style={{ fontWeight: "bold" }}>{followed.length}</span> people
+          <Tooltip title={showFollowers()} arrow placement="bottom-start">
+            <div>
+              <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
+              people follow {userData.firstName}
+            </div>
+          </Tooltip>
+          <Tooltip title={showFollowing()} arrow placement="bottom-start">
+            <div>
+              {userData.firstName} follows{" "}
+              <span style={{ fontWeight: "bold" }}>{followed.length}</span>{" "}
+              people
+            </div>
+          </Tooltip>
         </div>
         {profileUserId === currentUserId ? (
           <Button

@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import {
   addDoc,
   collection,
@@ -96,4 +98,17 @@ export async function addSingleStory(
     timestamp: Date.now(),
     fileMeta,
   });
+}
+
+export async function getUserNames(arrayIds: Array<string>) {
+  const usersNames: Array<string> = [];
+
+  for (const id of arrayIds) {
+    const usersRef = doc(db, "users", id);
+    const userSnap = await getDoc(usersRef);
+    usersNames.push(
+      `${userSnap.data()?.firstName} ${userSnap.data()?.lastName}`
+    );
+  }
+  return usersNames;
 }

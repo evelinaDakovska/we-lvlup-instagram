@@ -22,6 +22,8 @@ function PostCard(props: any): JSX.Element {
   const [isHomePage, setIsHomePage] = useState<boolean>(true);
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
+  const [likeNamesPost, setLikeNamesPost] = useState<Array<string>>([]);
+  const [likes, setLikes] = useState<Array<string>>([]);
   const current = props.postData;
   const fileType = current.fileMeta;
   // eslint-disable-next-line prefer-destructuring
@@ -29,6 +31,9 @@ function PostCard(props: any): JSX.Element {
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
   );
+  const currentUserName = `${useSelector(
+    (state: RootStateOrAny) => state.auth.firstName
+  )} ${useSelector((state: RootStateOrAny) => state.auth.lastName)}`;
   const postOwner = current.userId;
 
   useEffect(() => {
@@ -47,11 +52,37 @@ function PostCard(props: any): JSX.Element {
         setDislikedPost(true);
       }
     };
+    const getLikeNames = async (): Promise<void> => {
+      const usersNamesLiked: Array<string> = [];
+      setLikes(current.likes);
+      await current.likes.forEach(async (id: string, i: number) => {
+        const usersRef = doc(db, "users", id);
+        const userSnap = await getDoc(usersRef);
+        usersNamesLiked.push(
+          `${userSnap.data()?.firstName} ${userSnap.data()?.lastName}`
+        );
+        if (i === current.likes.length - 1) {
+          setLikeNamesPost(usersNamesLiked);
+        }
+      });
+    };
     isLiked();
+    getLikeNames();
   }, []);
 
   function likeBtnHandler(action: string) {
     if (action === "like") {
+      const likeNamesArray = [...likeNamesPost];
+      if (likes.includes(currentUserId)) {
+        const indexIds = likes.indexOf(currentUserId);
+        likes.splice(indexIds, 1);
+        const index = likeNamesPost.indexOf(currentUserName);
+        likeNamesArray.splice(index, 1);
+      } else {
+        likeNamesArray.push(currentUserName);
+        setLikes((prev) => [...prev, currentUserId]);
+      }
+      setLikeNamesPost(likeNamesArray);
       setLikedPost((prevValue: boolean) => !prevValue);
       setDislikedPost(false);
     } else {
@@ -74,6 +105,16 @@ function PostCard(props: any): JSX.Element {
         navigate(`/`);
       }
     }
+  }
+
+  function showLikes() {
+    return (
+      <>
+        {likeNamesPost.map((currentName: string) => {
+          return <div>{currentName}</div>;
+        })}
+      </>
+    );
   }
 
   return (
@@ -105,13 +146,13 @@ function PostCard(props: any): JSX.Element {
       )}
       <div className={styles.options}>
         <div className={styles.options}>
-          <Tooltip title="Like post">
+          <Tooltip title={showLikes()} arrow placement="bottom-start">
             <FavoriteBorderIcon
               sx={likedPost ? { color: "red" } : null}
               onClick={() => likeBtnHandler("like")}
             />
           </Tooltip>
-          <Tooltip title="Dislike post">
+          <Tooltip title="Dislike post" arrow>
             <HeartBrokenIcon
               sx={dislikedPost ? { color: "red" } : null}
               onClick={() => likeBtnHandler("dislike")}
@@ -124,12 +165,11 @@ function PostCard(props: any): JSX.Element {
           />
         </div>
         {postOwner === currentUserId ? (
-          <Tooltip title="Delete post">
+          <Tooltip title="Delete post" arrow>
             <DeleteIcon onClick={deletePost} />
           </Tooltip>
         ) : null}
       </div>
-      {!isHomePage ? <div>{current.likes?.length} likes</div> : null}
       <div className={styles.description}>
         <span>{current.userNames}</span>
         {current.description}
