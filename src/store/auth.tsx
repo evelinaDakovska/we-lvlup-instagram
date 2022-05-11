@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface AuthState {
@@ -39,7 +40,15 @@ const authSlice = createSlice({
       state.lastName = "";
       state.avatar = "";
     },
+    changeAvatar(state, fileURL) {
+      state.isAuth;
+      state.email;
+      state.userId;
+      state.firstName;
+      state.lastName;
+      state.avatar = fileURL.payload;
+    },
   },
 });
-export const { login, logout } = authSlice.actions;
+export const { login, logout, changeAvatar } = authSlice.actions;
 export default authSlice.reducer;

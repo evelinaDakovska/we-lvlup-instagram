@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable max-len */
@@ -11,28 +13,42 @@ import {
   where,
   getDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore/lite";
+import {
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { RootStateOrAny, useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { follow } from "utils/userSettings/follow";
 import { getUserNames } from "../../utils/postSettings/postSettings";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
-import { db } from "../../utils/firebaseConfig";
+import { db, storage } from "../../utils/firebaseConfig";
 import styles from "./profilePage.module.scss";
+import { dispatch } from "../../store/index";
+import { changeAvatar } from "../../store/auth";
 
 function ProfilePage(): JSX.Element {
   const [posts, setPosts] = useState<any>([]);
   const [userData, setUserData] = useState<any>({});
+  const [currentAvatar, setCurrentAvatar] = useState<string>("");
   const [followers, setFollowers] = useState<any>([]);
   const [followersNames, setFollowersNames] = useState<any>([]);
   const [followed, setFollowed] = useState<any>([]);
   const [followedNames, setFollowedNames] = useState<any>([]);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [uploadedAvatarFile, setUploadedAvatarFile] = useState<File>();
+  const [uploadedAvatar, setUploadedAvatar] = useState<boolean>(false);
   const { profileUserId } = useParams();
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
@@ -72,6 +88,7 @@ function ProfilePage(): JSX.Element {
       setUserData(docSnap.data());
       setFollowers(docSnap.data()?.followers);
       setFollowed(docSnap.data()?.followed);
+      setCurrentAvatar(docSnap.data()?.avatar);
     };
 
     getPosts();
@@ -152,11 +169,66 @@ function ProfilePage(): JSX.Element {
     return "";
   }
 
+  async function changeAvatarFunc() {
+    if (uploadedAvatarFile) {
+      const avatarRef = ref(storage, currentAvatar);
+      const uploadTask = uploadBytesResumable(avatarRef, uploadedAvatarFile);
+      await uploadBytes(avatarRef, uploadedAvatarFile);
+      let fileURL;
+      await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        fileURL = downloadURL;
+      });
+
+      const userRef = doc(db, "users", currentUserId);
+      await updateDoc(userRef, {
+        avatar: fileURL,
+      });
+      dispatch(changeAvatar(fileURL));
+      setUploadedAvatar(false);
+    }
+  }
+
   return (
     <div className={styles.pageContainer}>
       <Header />
       <div className={styles.userData}>
-        <img src={userData.avatar} alt="avatar" className={styles.avatar} />
+        {profileUserId === currentUserId ? (
+          <div>
+            <input
+              type="file"
+              name="file"
+              id="avatar"
+              style={{ display: "none" }}
+              onChange={(event) => {
+                if (event.target.files) {
+                  setCurrentAvatar(URL.createObjectURL(event.target.files[0]));
+                  setUploadedAvatar(true);
+                  setUploadedAvatarFile(event.target.files[0]);
+                }
+              }}
+            />
+            <label htmlFor="avatar">
+              <IconButton component="span" aria-label="upload picture">
+                <Avatar
+                  src={currentAvatar}
+                  sx={{ width: "80px", height: "80px" }}
+                />
+              </IconButton>
+            </label>
+            {uploadedAvatar && (
+              <button
+                type="button"
+                onClick={() => {
+                  changeAvatarFunc();
+                }}
+              >
+                Upload new avatar
+              </button>
+            )}
+          </div>
+        ) : (
+          <Avatar src={currentAvatar} sx={{ width: "80px", height: "80px" }} />
+        )}
         <div>
           <span style={{ fontWeight: "bold" }}>
             {userData.firstName} {userData.lastName}
