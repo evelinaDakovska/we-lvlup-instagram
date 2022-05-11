@@ -74,7 +74,7 @@ export function signIn(email: string, password: string) {
       dispatch(login(data));
     })
     .catch((error) => {
-      console.log(error.message);
+      alert(error.message);
     });
 }
 
