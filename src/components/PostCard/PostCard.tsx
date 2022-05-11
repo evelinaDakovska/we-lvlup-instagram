@@ -13,7 +13,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore/lite";
-import { likeHandler } from "utils/postSettings/likeHandler";
+import { likeHandlerPosts } from "utils/postSettings/likeHandler";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./PostCard.module.scss";
 
@@ -89,7 +89,7 @@ function PostCard(props: any): JSX.Element {
       setDislikedPost((prevValue: boolean) => !prevValue);
       setLikedPost(false);
     }
-    likeHandler(postId!, currentUserId, action);
+    likeHandlerPosts(postId!, currentUserId, action);
   }
 
   async function deletePost() {

@@ -4,7 +4,7 @@
 import { doc, updateDoc, getDoc } from "firebase/firestore/lite";
 import { db } from "utils/firebaseConfig";
 
-export async function likeHandler(
+export async function likeHandlerPosts(
   postId: string,
   currentUserId: string,
   action: string
@@ -41,5 +41,25 @@ export async function likeHandler(
   await updateDoc(postRef, {
     likes: likesPost,
     dislikes: dislikesPost,
+  });
+}
+
+export async function likeHandlerComments(
+  commentId: string,
+  currentUserId: string
+) {
+  const commentRef = doc(db, "comments", commentId);
+  const commentSnap = await getDoc(commentRef);
+  let likesComment = commentSnap.data()?.likes;
+
+  if (!likesComment.includes(currentUserId)) {
+    likesComment.push(currentUserId);
+  } else {
+    const index = likesComment.indexOf(currentUserId);
+    likesComment.splice(index, 1);
+  }
+
+  await updateDoc(commentRef, {
+    likes: likesComment,
   });
 }

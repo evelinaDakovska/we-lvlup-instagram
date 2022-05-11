@@ -4,6 +4,7 @@ import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
 import PostCard from "components/PostCard/PostCard";
+import Comments from "components/Comments/Comments";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./detailPage.module.scss";
 
@@ -31,7 +32,10 @@ function DetailPage(): JSX.Element {
     <div className={styles.pageContainer}>
       <Header />
       {postData ? (
-        <PostCard postData={postData} postId={postId} key={postId} />
+        <>
+          <PostCard postData={postData} postId={postId} key={postId} />
+          <Comments postId={postId} />
+        </>
       ) : null}
       <Footer />
     </div>
