@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import IconButton from "@mui/material/IconButton";
@@ -14,16 +15,19 @@ function UserStories(props: any): JSX.Element {
   const data = props.storyData;
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 0 : prevProgress + 5
-      );
-    }, 190);
+    if (openModal) {
+      const timer = setInterval(() => {
+        setProgress((prevProgress) =>
+          prevProgress >= 110 ? 0 : prevProgress + 10
+        );
+      }, 250);
 
-    return () => {
-      setProgress(0);
-      clearInterval(timer);
-    };
+      return () => {
+        setProgress(0);
+        clearInterval(timer);
+      };
+    }
+    return () => {};
   }, [openModal]);
 
   return (
