@@ -7,14 +7,22 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useState, useEffect } from "react";
+import { getUserAvatar } from "utils/userSettings/userAuth";
 import styles from "./Stories.module.scss";
 
 function UserStories(props: any): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [avatar, setAvatar] = useState("");
   const data = props.storyData;
+  getUserAvatar(data.userId);
 
   useEffect(() => {
+    const getAvatar = async () => {
+      const currentAvatar = await getUserAvatar(data.userId);
+      setAvatar(currentAvatar);
+    };
+    getAvatar();
     if (openModal) {
       const timer = setInterval(() => {
         setProgress((prevProgress) =>
@@ -46,7 +54,7 @@ function UserStories(props: any): JSX.Element {
           height: "100%",
         }}
       >
-        <Avatar src={data.userAvatar} alt="User avatar" />
+        <Avatar src={avatar} alt="User avatar" />
         <div className={styles.storyTitle}>{data.userName}</div>
       </IconButton>
       {openModal ? (

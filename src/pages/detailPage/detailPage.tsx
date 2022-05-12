@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore/lite";
+import { doc, getDoc } from "firebase/firestore";
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { useState, useEffect } from "react";

@@ -14,11 +14,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   collection,
-  getDocs,
+  onSnapshot,
   query,
   orderBy,
   where,
-} from "firebase/firestore/lite";
+} from "firebase/firestore";
 import { addSingleStory } from "utils/postSettings/postSettings";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";
@@ -38,17 +38,16 @@ function Stories(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getStories = async (): Promise<void> => {
-      const allStories: Array<any> = [];
-      const storiesRef = collection(db, "stories");
-      const now = Date.now();
-      const cutoff = now - 24 * 60 * 60 * 1000;
-      const docRef = query(
-        storiesRef,
-        where("timestamp", ">", cutoff),
-        orderBy("timestamp", "desc")
-      );
-      const querySnapshot = await getDocs(docRef);
+    let allStories: Array<any> = [];
+    const now = Date.now();
+    const cutoff = now - 24 * 60 * 60 * 1000;
+    const docRef = query(
+      collection(db, "stories"),
+      where("timestamp", ">", cutoff),
+      orderBy("timestamp", "desc")
+    );
+    const unsubscribe = onSnapshot(docRef, async (querySnapshot) => {
+      allStories = [];
       querySnapshot.forEach((doc) => {
         let data = doc.data();
         data = { ...data, id: doc.id };
@@ -56,8 +55,11 @@ function Stories(): JSX.Element {
       });
       const promise = await Promise.all(allStories);
       setStories(promise);
+    });
+
+    return () => {
+      unsubscribe();
     };
-    getStories();
   }, []);
 
   async function addNewStories() {

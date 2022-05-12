@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore/lite";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "utils/firebaseConfig";
 
 export async function follow(userId: string, ownerId: string) {

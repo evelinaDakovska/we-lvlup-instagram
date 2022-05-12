@@ -5,7 +5,7 @@ import {
   query,
   orderBy,
   where,
-} from "firebase/firestore/lite";
+} from "firebase/firestore";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";

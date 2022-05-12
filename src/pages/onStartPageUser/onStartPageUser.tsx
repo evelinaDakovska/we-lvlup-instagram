@@ -1,7 +1,7 @@
 import Footer from "components/Footer/Footer";
 import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore/lite";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import PostCard from "components/PostCard/PostCard";
 import Stories from "components/Stories/Stories";
 import { db } from "../../utils/firebaseConfig";

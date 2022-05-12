@@ -12,8 +12,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore/lite";
+import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { likeHandlerPosts } from "utils/postSettings/likeHandler";
+import { getUserAvatar } from "utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
 import styles from "./PostCard.module.scss";
 
@@ -24,6 +25,7 @@ function PostCard(props: any): JSX.Element {
   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
   const [likeNamesPost, setLikeNamesPost] = useState<Array<string>>([]);
   const [likes, setLikes] = useState<Array<string>>([]);
+  const [avatar, setAvatar] = useState("");
   const current = props.postData;
   const fileType = current.fileMeta;
   // eslint-disable-next-line prefer-destructuring
@@ -40,6 +42,11 @@ function PostCard(props: any): JSX.Element {
     if (window.location.pathname.includes("/details")) {
       setIsHomePage(false);
     }
+    const getAvatar = async () => {
+      const currentAvatar = await getUserAvatar(current.userId);
+      setAvatar(currentAvatar);
+    };
+    getAvatar();
     const isLiked = async (): Promise<void> => {
       const postRef = doc(db, "posts", postId);
       const postSnap = await getDoc(postRef);
@@ -111,7 +118,7 @@ function PostCard(props: any): JSX.Element {
     return (
       <>
         {likeNamesPost.map((currentName: string) => {
-          return <div>{currentName}</div>;
+          return <div key={currentName}>{currentName}</div>;
         })}
       </>
     );
@@ -121,7 +128,7 @@ function PostCard(props: any): JSX.Element {
     <div className={styles.singlePost}>
       <div className={styles.userData}>
         <Avatar
-          src={current.userAvatar}
+          src={avatar}
           alt="User avatar"
           onClick={() => navigate(`/profile/${current.userId}`)}
           sx={{ width: "40px", height: "40px", borderRadius: "50%" }}

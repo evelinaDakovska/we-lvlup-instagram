@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore/lite";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import {
   ref,
   uploadBytes,
@@ -143,4 +143,11 @@ export function signInFacebook() {
     .catch((error) => {
       console.log(error.message);
     });
+}
+
+export async function getUserAvatar(userId: string) {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+  const { avatar } = docSnap.data()!;
+  return avatar;
 }

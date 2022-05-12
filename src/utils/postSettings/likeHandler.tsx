@@ -1,7 +1,7 @@
 /* eslint-disable no-lonely-if */
 /* eslint-disable prefer-const */
 /* eslint-disable prefer-destructuring */
-import { doc, updateDoc, getDoc } from "firebase/firestore/lite";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "utils/firebaseConfig";
 
 export async function likeHandlerPosts(
