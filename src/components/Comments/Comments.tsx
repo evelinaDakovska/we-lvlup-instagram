@@ -1,10 +1,4 @@
-import {
-  query,
-  where,
-  orderBy,
-  collection,
-  getDocs,
-} from "firebase/firestore/lite";
+import { query, where, orderBy, collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import { db } from "utils/firebaseConfig";
@@ -22,6 +16,7 @@ function Comments(props: any): JSX.Element {
       const q = query(
         commentsRef,
         where("postId", "==", props.postId),
+        where("parentCommentId", "==", null),
         orderBy("timestamp", "desc")
       );
       const querySnapshot = await getDocs(q);
@@ -53,6 +48,7 @@ function Comments(props: any): JSX.Element {
               currentComment={current}
               currentId={current.id}
               key={current.id}
+              postId={props.postId}
             />
           );
         })}

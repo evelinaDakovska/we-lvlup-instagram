@@ -2,13 +2,14 @@
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState } from "react";
 import { db } from "utils/firebaseConfig";
 
 function CommentInput(props: any): JSX.Element {
   const [comment, setComment] = useState("");
+  const parentCommentId = props.parentCommentId ? props.parentCommentId : null;
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
   const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const firstName = useSelector(
@@ -20,7 +21,7 @@ function CommentInput(props: any): JSX.Element {
     const commentData = {
       comment,
       likes: [],
-      parentCommentId: null,
+      parentCommentId,
       postId: props.postId,
       timestamp: serverTimestamp(),
       userAvatar,
@@ -30,7 +31,9 @@ function CommentInput(props: any): JSX.Element {
     };
     await addDoc(collection(db, "comments"), commentData);
     setComment("");
-    props.setAllComments((prev: Array<any>) => [commentData, ...prev]);
+    if (props.setAllComments) {
+      props.setAllComments((prev: Array<any>) => [commentData, ...prev]);
+    }
   }
 
   return (
