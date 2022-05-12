@@ -193,81 +193,48 @@ function ProfilePage(): JSX.Element {
       <Header />
       <div className={styles.userData}>
         {profileUserId === currentUserId ? (
-          <div>
-            <input
-              type="file"
-              name="file"
-              id="avatar"
-              style={{ display: "none" }}
-              onChange={(event) => {
-                if (event.target.files) {
-                  setCurrentAvatar(URL.createObjectURL(event.target.files[0]));
-                  setUploadedAvatar(true);
-                  setUploadedAvatarFile(event.target.files[0]);
-                }
-              }}
-            />
-            <label htmlFor="avatar">
-              <IconButton component="span" aria-label="upload picture">
-                <Avatar
-                  src={currentAvatar}
-                  sx={{ width: "80px", height: "80px" }}
-                />
-              </IconButton>
-            </label>
-            {uploadedAvatar && (
-              <button
-                type="button"
-                onClick={() => {
-                  changeAvatarFunc();
+          <div className={styles.avatarContainer}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <input
+                type="file"
+                name="file"
+                id="avatar"
+                style={{ display: "none" }}
+                onChange={(event) => {
+                  if (event.target.files) {
+                    setCurrentAvatar(
+                      URL.createObjectURL(event.target.files[0])
+                    );
+                    setUploadedAvatar(true);
+                    setUploadedAvatarFile(event.target.files[0]);
+                  }
                 }}
-              >
-                Upload new avatar
-              </button>
-            )}
-          </div>
-        ) : (
-          <Avatar src={currentAvatar} sx={{ width: "80px", height: "80px" }} />
-        )}
-        <div>
-          <span style={{ fontWeight: "bold" }}>
-            {userData.firstName} {userData.lastName}
-          </span>
-          <br />
-          {userData.firstName} has{" "}
-          <span style={{ fontWeight: "bold" }}>{userData.postsCount}</span>{" "}
-          posts
-          <Tooltip title={showFollowers()} arrow placement="bottom-start">
-            <div>
-              <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
-              people follow {userData.firstName}
+              />
+              <label htmlFor="avatar">
+                <IconButton component="span" aria-label="upload picture">
+                  <Avatar
+                    src={currentAvatar}
+                    sx={{ width: "80px", height: "80px" }}
+                  />
+                </IconButton>
+              </label>
+              {uploadedAvatar && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    changeAvatarFunc();
+                  }}
+                >
+                  Upload new avatar
+                </button>
+              )}
+              <div style={{ fontWeight: "bold" }}>
+                {userData.firstName} {userData.lastName}
+              </div>
             </div>
-          </Tooltip>
-          <Tooltip title={showFollowing()} arrow placement="bottom-start">
-            <div>
-              {userData.firstName} follows{" "}
-              <span style={{ fontWeight: "bold" }}>{followed.length}</span>{" "}
-              people
-            </div>
-          </Tooltip>
-        </div>
-        {profileUserId === currentUserId ? (
-          <Button
-            variant="contained"
-            onClick={onSignOut}
-            sx={{ width: "40px", height: "40px", minWidth: "0", padding: "0" }}
-          >
-            <LogoutIcon />
-          </Button>
-        ) : (
-          <Tooltip
-            title={
-              isFollowing ? "Already following, wanna unfollow?" : "Follow"
-            }
-          >
             <Button
-              variant={isFollowing ? "contained" : "outlined"}
-              onClick={followHandler}
+              variant="contained"
+              onClick={onSignOut}
               sx={{
                 width: "40px",
                 height: "40px",
@@ -275,10 +242,60 @@ function ProfilePage(): JSX.Element {
                 padding: "0",
               }}
             >
-              <BookmarkIcon />
+              <LogoutIcon />
             </Button>
-          </Tooltip>
+          </div>
+        ) : (
+          <div className={styles.avatarContainer}>
+            <div
+              style={{ display: "flex", alignItems: "center", width: "100%" }}
+            >
+              <Avatar
+                src={currentAvatar}
+                sx={{ width: "80px", height: "80px" }}
+              />
+              <div style={{ fontWeight: "bold", paddingLeft: "5%" }}>
+                {userData.firstName} {userData.lastName}
+              </div>
+            </div>
+            <Tooltip
+              title={
+                isFollowing ? "Already following, wanna unfollow?" : "Follow"
+              }
+            >
+              <Button
+                variant={isFollowing ? "contained" : "outlined"}
+                onClick={followHandler}
+                sx={{
+                  width: "40px",
+                  height: "40px",
+                  minWidth: "0",
+                  padding: "0",
+                }}
+              >
+                <BookmarkIcon />
+              </Button>
+            </Tooltip>
+          </div>
         )}
+        <div className={styles.dataContainer}>
+          <div className={styles.singleInfo}>
+            <span style={{ fontWeight: "bold" }}>{userData.postsCount}</span>
+            posts
+          </div>
+          <Tooltip title={showFollowers()} arrow placement="bottom-start">
+            <div className={styles.singleInfo}>
+              <span style={{ fontWeight: "bold" }}>{followers.length}</span>
+              followers
+            </div>
+          </Tooltip>
+          <Tooltip title={showFollowing()} arrow placement="bottom-start">
+            <div className={styles.singleInfo}>
+              <span style={{ fontWeight: "bold" }}>{followed.length}</span>
+              following
+            </div>
+          </Tooltip>
+        </div>
       </div>
       <div className={styles.contentContainer}>
         {posts.map((current: any) => {
