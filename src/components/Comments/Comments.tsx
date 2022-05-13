@@ -49,6 +49,7 @@ function Comments(props: any): JSX.Element {
               currentId={current.id}
               key={current.id}
               postId={props.postId}
+              allComments={allComments}
             />
           );
         })}

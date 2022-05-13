@@ -6,26 +6,16 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ReplyIcon from "@mui/icons-material/Reply";
-import List from "@mui/material/List";
 import { useState, useEffect } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { query, where, orderBy, collection, getDocs } from "firebase/firestore";
 import { likeHandlerComments } from "utils/postSettings/likeHandler";
 import { getUserAvatar } from "utils/userSettings/userAuth";
-import { db } from "utils/firebaseConfig";
-import CommentInput from "./CommentInput";
-import SingleReply from "./SingleReply";
 
-function SingleComment(props: any): JSX.Element {
+function SingleReply(props: any): JSX.Element {
   const { currentComment } = props;
-  const { allComments } = props;
-  const { postId } = props;
   const { currentId } = props;
   const [likedComment, setLikedComment] = useState(false);
-  const [replyInput, setReplyInput] = useState(false);
   const [likes, setLikes] = useState<Array<string>>([]);
-  const [replies, setReplies] = useState<Array<any>>([]);
   const [avatar, setAvatar] = useState("");
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
@@ -42,27 +32,6 @@ function SingleComment(props: any): JSX.Element {
       setLikedComment(true);
     }
   }, []);
-
-  useEffect(() => {
-    const getReplies = async (): Promise<void> => {
-      const allRepliesArray: Array<any> = [];
-      const commentsRef = collection(db, "comments");
-      const q = query(
-        commentsRef,
-        where("parentCommentId", "==", currentId),
-        orderBy("timestamp", "desc")
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        let data = doc.data();
-        data = { ...data, id: doc.id };
-        allRepliesArray.push(data);
-      });
-      const promise = await Promise.all(allRepliesArray);
-      setReplies(promise);
-    };
-    getReplies();
-  }, [allComments]);
 
   function likeBtnHandler() {
     setLikedComment((prevValue: boolean) => !prevValue);
@@ -89,13 +58,6 @@ function SingleComment(props: any): JSX.Element {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               {currentComment.firstName} {currentComment.lastName}
               <div>
-                <Tooltip title="Reply" arrow placement="bottom-start">
-                  <ReplyIcon
-                    onClick={() => {
-                      setReplyInput((prev) => !prev);
-                    }}
-                  />
-                </Tooltip>
                 <Tooltip title="Like" arrow placement="bottom-start">
                   <FavoriteBorderIcon
                     sx={
@@ -117,29 +79,6 @@ function SingleComment(props: any): JSX.Element {
               color="text.primary"
             >
               {currentComment.comment}
-              {replyInput ? (
-                <CommentInput postId={postId} parentCommentId={currentId} />
-              ) : null}
-              {replies ? (
-                <List
-                  sx={{
-                    width: "100%",
-                    maxWidth: 360,
-                    bgcolor: "background.paper",
-                  }}
-                >
-                  {replies.map((current: any) => {
-                    return (
-                      <SingleReply
-                        currentComment={current}
-                        currentId={current.id}
-                        key={current.id}
-                        postId={props.postId}
-                      />
-                    );
-                  })}
-                </List>
-              ) : null}
             </Typography>
           }
         />
@@ -149,4 +88,4 @@ function SingleComment(props: any): JSX.Element {
   );
 }
 
-export default SingleComment;
+export default SingleReply;
