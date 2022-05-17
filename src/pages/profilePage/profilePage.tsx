@@ -28,8 +28,6 @@ import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import Footer from "components/Footer/Footer";
-import Header from "components/Header/Header";
 import { follow } from "utils/userSettings/follow";
 import { getUserNames } from "../../utils/postSettings/postSettings";
 import { signOutFunc } from "../../utils/userSettings/userAuth";
@@ -190,7 +188,6 @@ function ProfilePage(): JSX.Element {
 
   return (
     <div className={styles.pageContainer}>
-      <Header />
       <div className={styles.userData}>
         {profileUserId === currentUserId ? (
           <div className={styles.avatarContainer}>
@@ -311,7 +308,6 @@ function ProfilePage(): JSX.Element {
           );
         })}
       </div>
-      <Footer />
     </div>
   );
 }

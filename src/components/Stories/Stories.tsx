@@ -12,7 +12,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  where,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import { addSingleStory } from "utils/postSettings/postSettings";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";
@@ -21,6 +29,7 @@ import styles from "./Stories.module.scss";
 function Stories(): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
   const [stories, setStories] = useState<any>([]);
+  const [followed, setFollowed] = useState<any>([]);
   const [uploadedStoryURL, setUploadedStoryURL] = useState<string>("");
   const [uploadedStory, setUploadedStory] = useState<File>();
   const [disable, setDisable] = useState<boolean>(false);
@@ -32,27 +41,45 @@ function Stories(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const getFollowers = async (): Promise<void> => {
+      const allFollowers: Array<any> = [];
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.data) {
+        userSnap.data()!.followed.forEach((foll: string) => {
+          allFollowers.push(foll);
+        });
+      }
+      const promise = await Promise.all(allFollowers);
+      setFollowed([...promise, userId]);
+    };
+    getFollowers();
+  }, []);
+  useEffect(() => {
     const getStories = async (): Promise<void> => {
       const allStories: Array<any> = [];
       const storiesRef = collection(db, "stories");
       const now = Date.now();
       const cutoff = now - 24 * 60 * 60 * 1000;
-      const docRef = query(
-        storiesRef,
-        where("timestamp", ">", cutoff),
-        orderBy("timestamp", "desc")
-      );
-      const querySnapshot = await getDocs(docRef);
-      querySnapshot.forEach((doc) => {
-        let data = doc.data();
-        data = { ...data, id: doc.id };
-        allStories.push(data);
-      });
-      const promise = await Promise.all(allStories);
-      setStories(promise);
+      if (followed.length > 0) {
+        const docRef = query(
+          storiesRef,
+          where("userId", "in", followed),
+          where("timestamp", ">", cutoff),
+          orderBy("timestamp", "desc")
+        );
+        const querySnapshot = await getDocs(docRef);
+        querySnapshot.forEach((cdoc) => {
+          let data = cdoc.data();
+          data = { ...data, id: cdoc.id };
+          allStories.push(data);
+        });
+        const promise = await Promise.all(allStories);
+        setStories(promise);
+      }
     };
     getStories();
-  }, []);
+  }, [followed]);
 
   async function addNewStories() {
     setDisable(true);
@@ -68,7 +95,14 @@ function Stories(): JSX.Element {
 
   return (
     <>
-      <Box sx={{ width: "100%", height: "80px", display: "flex" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "80px",
+          display: "flex",
+          padding: "0",
+        }}
+      >
         <AppBar
           sx={{
             backgroundColor: "white",
@@ -76,14 +110,15 @@ function Stories(): JSX.Element {
             position: "relative",
             width: "100%",
             height: "100%",
-            overflow: "scroll",
+            overflow: "auto",
+            padding: "0",
           }}
           position="fixed"
         >
           <Toolbar
             sx={{
               height: "100%",
-              padding: "5px",
+              padding: "0",
             }}
           >
             <IconButton

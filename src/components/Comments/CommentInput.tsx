@@ -45,6 +45,7 @@ function CommentInput(props: any): JSX.Element {
         alignItems: "center",
         width: "100%",
         marginBottom: "5%",
+        marginTop: "2%",
       }}
     >
       <InputBase

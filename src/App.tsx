@@ -2,8 +2,10 @@
  */
 import { RootStateOrAny, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-
+import { useState, useLayoutEffect, useEffect } from "react";
 import "./App.scss";
+import Header from "components/Header/Header";
+import Footer from "components/Footer/Footer";
 import ProfilePage from "./pages/profilePage/profilePage";
 import DetailPage from "./pages/detailPage/detailPage";
 import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
@@ -15,9 +17,31 @@ import UploadPage from "./pages/uploadPage/uploadPage";
 function App() {
   /*   const user = false; */
   const isAuth = useSelector((state: RootStateOrAny) => state.auth.isAuth);
+  const [widthDimensions, setWidthDimensions] = useState(window.innerWidth);
+  const [smallScreen, setSmallScreen] = useState(true);
+
+  useLayoutEffect(() => {
+    function handleResize() {
+      setWidthDimensions(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return function cleanup() {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (widthDimensions >= 768) {
+      setSmallScreen(false);
+    } else {
+      setSmallScreen(true);
+    }
+  }, [widthDimensions]);
 
   return (
     <div className="App">
+      {isAuth ? <Header /> : null}
       <Routes>
         {isAuth ? (
           <>
@@ -33,6 +57,7 @@ function App() {
           </>
         )}
       </Routes>
+      {isAuth ? smallScreen ? <Footer /> : null : null}
     </div>
   );
 }

@@ -3,7 +3,10 @@
   display: flex;
   align-items: center;
   * {
-    margin-right: 5%;
+    margin-right: 2%;
+    @media (max-width: 768px) {
+      margin-right: 5%;
+    }
   }
 }
 
@@ -13,25 +16,39 @@
 }
 
 .description {
-  margin-top: 3%;
+  @media (max-width: 768px) {
+    margin-top: 3%;
+  }
+  margin-top: 2%;
+  margin-left: 3%;
   font-size: smaller;
   span {
     font-weight: bold;
   }
 }
 .singlePost {
-  margin-bottom: 5%;
+  margin-bottom: 3%;
+  margin-top: 3%;
   padding-bottom: 5%;
   background-color: white;
   border-radius: 3%;
 }
 
 .options {
-  margin-top: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.optionsContainer {
+  margin: 3% 3% 0 3%;
   display: flex;
   justify-content: space-between;
 }
 
 .userData {
   padding-left: 2%;
+}
+
+.userName {
+  cursor: pointer;
 }

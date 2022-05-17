@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import Footer from "components/Footer/Footer";
-import Header from "components/Header/Header";
 import { useState, useEffect } from "react";
 import PostCard from "components/PostCard/PostCard";
 import Comments from "components/Comments/Comments";
@@ -30,14 +28,12 @@ function DetailPage(): JSX.Element {
 
   return (
     <div className={styles.pageContainer}>
-      <Header />
       {postData ? (
         <>
           <PostCard postData={postData} postId={postId} key={postId} />
           <Comments postId={postId} />
         </>
       ) : null}
-      <Footer />
     </div>
   );
 }

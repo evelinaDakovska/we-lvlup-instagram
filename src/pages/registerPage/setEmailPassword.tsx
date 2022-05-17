@@ -92,7 +92,6 @@ function SetEmailPassword(props: any): JSX.Element {
         label="Password"
         type="password"
         value={password}
-        autoComplete="current-password"
         onChange={(event) => {
           setPassword(event.target.value);
         }}

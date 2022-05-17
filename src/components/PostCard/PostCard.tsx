@@ -131,9 +131,17 @@ function PostCard(props: any): JSX.Element {
           src={avatar}
           alt="User avatar"
           onClick={() => navigate(`/profile/${current.userId}`)}
-          sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
+          sx={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
         />
-        <h4 onClick={() => navigate(`/profile/${current.userId}`)}>
+        <h4
+          className={styles.userName}
+          onClick={() => navigate(`/profile/${current.userId}`)}
+        >
           {current.userNames}
         </h4>
       </div>
@@ -151,7 +159,7 @@ function PostCard(props: any): JSX.Element {
           <source src={current.url} />
         </video>
       )}
-      <div className={styles.options}>
+      <div className={styles.optionsContainer}>
         <div className={styles.options}>
           <Tooltip title={showLikes()} arrow placement="bottom-start">
             <FavoriteBorderIcon

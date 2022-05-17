@@ -124,7 +124,6 @@ function SingleComment(props: any): JSX.Element {
                 <List
                   sx={{
                     width: "100%",
-                    maxWidth: 360,
                     bgcolor: "background.paper",
                   }}
                 >

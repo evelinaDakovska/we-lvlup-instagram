@@ -2,7 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 40%;
+  background-color: white;
+  border-radius: 3%;
+  margin: 3%;
+  padding-bottom: 5%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .avatar {
@@ -20,15 +27,23 @@
 }
 
 .contentContainer {
+  width: 90%;
   margin-top: 10%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 3px;
   column-gap: 3px;
   img {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     margin: 1%;
+  }
+  @media (max-width: 768px) {
+    img {
+      width: 100px;
+      height: 100px;
+      margin: 1%;
+    }
   }
 }
 

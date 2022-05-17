@@ -34,26 +34,28 @@ function Comments(props: any): JSX.Element {
   return (
     <div className={styles.commentSection}>
       <CommentInput postId={props.postId} setAllComments={setAllComments} />
-      <List
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-          marginBottom: "18%",
-        }}
-      >
-        {allComments.map((current: any) => {
-          return (
-            <SingleComment
-              currentComment={current}
-              currentId={current.id}
-              key={current.id}
-              postId={props.postId}
-              allComments={allComments}
-            />
-          );
-        })}
-      </List>
+      {allComments.length > 0 ? (
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            marginBottom: "18%",
+            borderRadius: "3%",
+          }}
+        >
+          {allComments.map((current: any) => {
+            return (
+              <SingleComment
+                currentComment={current}
+                currentId={current.id}
+                key={current.id}
+                postId={props.postId}
+                allComments={allComments}
+              />
+            );
+          })}
+        </List>
+      ) : null}
     </div>
   );
 }

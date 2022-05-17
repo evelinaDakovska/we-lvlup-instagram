@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { RootStateOrAny, useSelector } from "react-redux";
-import Footer from "components/Footer/Footer";
-import Header from "components/Header/Header";
 import { addSinglePost } from "utils/postSettings/postSettings";
 import styles from "./uploadPage.module.scss";
 
@@ -46,7 +44,6 @@ function UploadPage(): JSX.Element {
 
   return (
     <div className={styles.pageContainer}>
-      <Header />
       <div className={styles.contentContainer}>
         {uploadedPhotoURL && (
           <>
@@ -66,7 +63,14 @@ function UploadPage(): JSX.Element {
               id="description"
               variant="outlined"
               value={description}
-              sx={{ marginTop: "5%", width: "80%" }}
+              sx={{
+                width: "50%",
+                marginTop: "1%",
+                "@media (max-width: 768px)": {
+                  marginTop: "5%",
+                  width: "80%",
+                },
+              }}
               onChange={(event) => {
                 setDescription(event.target.value);
               }}
@@ -77,7 +81,12 @@ function UploadPage(): JSX.Element {
               disabled={disable}
               loadingIndicator="Loading..."
               variant="contained"
-              sx={{ width: "60%" }}
+              sx={{
+                width: "10%",
+                "@media (max-width: 768px)": {
+                  width: "60%",
+                },
+              }}
             >
               Upload
             </LoadingButton>
@@ -102,7 +111,6 @@ function UploadPage(): JSX.Element {
           </label>
         </Button>
       </div>
-      <Footer />
     </div>
   );
 }

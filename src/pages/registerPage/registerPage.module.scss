@@ -1,5 +1,8 @@
 .regContainer {
-  width: 70%;
+  width: 20%;
+  @media (max-width: 768px) {
+    width: 70%;
+  }
   * {
     box-sizing: border-box;
     width: 100%;
@@ -13,7 +16,7 @@
 .mailContainer {
   display: flex;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   padding-bottom: 10px;
 }
 

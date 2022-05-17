@@ -1,5 +1,5 @@
 .loginContainer {
-  width: 70%;
+  width: 20%;
   height: 100%;
   color: grey;
   .alternativeLogin,
@@ -20,6 +20,9 @@
       background-color: #b2dffc;
       color: white;
     }
+  }
+  @media (max-width: 768px) {
+    width: 70%;
   }
 }
 
