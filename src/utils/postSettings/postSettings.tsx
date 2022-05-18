@@ -93,8 +93,6 @@ export async function addSingleStory(
     url: fileURL,
     userId,
     userName: firstName,
-    userAvatar,
-    likes: [],
     timestamp: Date.now(),
     fileMeta,
   });

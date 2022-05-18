@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -14,38 +15,49 @@ function UserStories(props: any): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
   const [progress, setProgress] = useState(0);
   const [avatar, setAvatar] = useState("");
+  const [counter, setCounter] = useState(0);
   const data = props.storyData;
-  getUserAvatar(data.userId);
 
   useEffect(() => {
     const getAvatar = async () => {
-      const currentAvatar = await getUserAvatar(data.userId);
+      const currentAvatar = await getUserAvatar(props.userId);
       setAvatar(currentAvatar);
     };
     getAvatar();
+  }, [props.userId]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
     if (openModal) {
       const timer = setInterval(() => {
-        setProgress((prevProgress) =>
-          prevProgress >= 110 ? 0 : prevProgress + 10
-        );
-      }, 250);
+        if (progress !== 110) {
+          setProgress((prevProgress) => prevProgress + 10);
+        }
+      }, 500);
 
       return () => {
-        setProgress(0);
         clearInterval(timer);
       };
     }
-    return () => {};
   }, [openModal]);
+
+  useEffect(() => {
+    if (progress === 110) {
+      if (data[counter + 1]) {
+        setCounter((prev) => prev + 1);
+      } else {
+        setOpenModal(false);
+        setCounter(0);
+      }
+      setProgress(0);
+    }
+  }, [counter, data, progress]);
 
   return (
     <div className={styles.storyContainer}>
       <IconButton
         onClick={() => {
           setOpenModal(true);
-          setTimeout(() => {
-            setOpenModal(false);
-          }, 3000);
         }}
         sx={{
           p: 0,
@@ -55,7 +67,8 @@ function UserStories(props: any): JSX.Element {
         }}
       >
         <Avatar src={avatar} alt="User avatar" />
-        <div className={styles.storyTitle}>{data.userName}</div>
+        {/*         <div className={styles.storyTitle}>{data.userName}</div>
+         */}{" "}
       </IconButton>
       {openModal ? (
         <Modal
@@ -84,17 +97,11 @@ function UserStories(props: any): JSX.Element {
             }}
           >
             <LinearProgress variant="determinate" value={progress} />
-            {!data!.fileMeta.includes("video") ? (
-              <img
-                className={styles.uploadedPhoto}
-                src={data.url}
-                alt="avatar"
-              />
-            ) : (
-              <video className={styles.uploadedPhoto} controls>
-                <source src={data.url} />
-              </video>
-            )}
+            <img
+              className={styles.uploadedPhoto}
+              src={data[counter]}
+              alt="avatar"
+            />
           </Box>
         </Modal>
       ) : null}

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/media-has-caption */
 import AppBar from "@mui/material/AppBar";
@@ -75,15 +76,28 @@ function Stories(): JSX.Element {
           allStories.push(data);
         });
         const promise = await Promise.all(allStories);
-        setStories(promise);
+        const sortedStories: Record<string, Array<string>> = {};
+        if (promise.length > 0) {
+          for (let i = 0; i < promise.length; i++) {
+            const currentUrl = promise[i].url;
+            const currentId: string = promise[i].userId;
+
+            if (currentId in sortedStories) {
+              sortedStories[currentId] = [
+                ...sortedStories[currentId],
+                currentUrl,
+              ];
+            } else {
+              sortedStories[currentId] = [currentUrl];
+            }
+          }
+        }
+
+        setStories(sortedStories);
       }
     };
     getStories();
   }, [followed]);
-
-  useEffect(() => {
-    console.log(stories);
-  }, [stories]);
 
   async function addNewStories() {
     setDisable(true);
@@ -172,15 +186,9 @@ function Stories(): JSX.Element {
               </IconButton>
               <div className={styles.storyTitle}>Your story</div>
             </IconButton>
-            {stories.map((current: any) => {
-              return (
-                <UserStories
-                  storyData={current}
-                  storyId={current.id}
-                  key={current.id}
-                />
-              );
-            })}
+            {Object.entries(stories).map(([key, value]) => (
+              <UserStories storyData={value} userId={key} key={key} />
+            ))}
           </Toolbar>
         </AppBar>
       </Box>
