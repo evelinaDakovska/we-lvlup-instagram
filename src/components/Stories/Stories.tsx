@@ -81,6 +81,10 @@ function Stories(): JSX.Element {
     getStories();
   }, [followed]);
 
+  useEffect(() => {
+    console.log(stories);
+  }, [stories]);
+
   async function addNewStories() {
     setDisable(true);
     await addSingleStory(
@@ -193,7 +197,10 @@ function Stories(): JSX.Element {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "90%",
+              "@media (max-width: 768px)": {
+                width: "90%",
+              },
+              width: "40%",
               bgcolor: "background.paper",
               border: "2px solid #000",
               boxShadow: 24,
