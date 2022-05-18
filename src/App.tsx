@@ -6,6 +6,7 @@ import { useState, useLayoutEffect, useEffect } from "react";
 import "./App.scss";
 import Header from "components/Header/Header";
 import Footer from "components/Footer/Footer";
+import HeaderBigScreen from "components/Header/HeaderBigScreen";
 import ProfilePage from "./pages/profilePage/profilePage";
 import DetailPage from "./pages/detailPage/detailPage";
 import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
@@ -41,7 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      {isAuth ? <Header /> : null}
+      {isAuth ? smallScreen ? <Header /> : <HeaderBigScreen /> : null}
       <Routes>
         {isAuth ? (
           <>
