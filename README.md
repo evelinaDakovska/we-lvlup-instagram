@@ -1,4 +1,6 @@
-# Instagram clone [Link to deployed project](https://we-lvlup-insta.vercel.app/)
+# Instagram clone 
+
+[Link to deployed project](https://we-lvlup-insta.vercel.app/)
 
 "Instagram clone" is single page application build with React and Typescript. Only for educational purposes.
 
