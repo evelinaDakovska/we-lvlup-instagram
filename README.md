@@ -1,10 +1,11 @@
-# Instagram clone
+# Instagram clone [Link to deployed project](https://we-lvlup-insta.vercel.app/)
 
 "Instagram clone" is single page application build with React and Typescript. Only for educational purposes.
 
 ## Main Features
 
 - Home page - most recently uploaded posts with infinite scroll restricted to authenticated users
+- Stories feature - images available 24h only for followed users
 - Post page - detailed post page restricted to authenticated users
 - Upload page - upload posts restricted to authenticated users
 - Profile page - profile page with details about the user and list of all posts
