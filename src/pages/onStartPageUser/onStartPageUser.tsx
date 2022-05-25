@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore/lite";
 import PostCard from "components/PostCard/PostCard";
 import Stories from "components/Stories/Stories";
 import { db } from "../../utils/firebaseConfig";

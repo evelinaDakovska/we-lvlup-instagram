@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore/lite";
 import { likeHandlerPosts } from "utils/postSettings/likeHandler";
 import { getUserAvatar } from "utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
@@ -109,7 +109,7 @@ function PostCard(props: any): JSX.Element {
         await updateDoc(userRef, {
           postsCount: userPosts,
         });
-        navigate(`/`);
+        navigate(0);
       }
     }
   }

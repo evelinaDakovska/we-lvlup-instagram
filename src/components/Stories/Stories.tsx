@@ -13,6 +13,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Compressor from "compressorjs";
 import {
   collection,
   getDocs,
@@ -21,7 +22,7 @@ import {
   where,
   getDoc,
   doc,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { addSingleStory } from "utils/postSettings/postSettings";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";
@@ -32,7 +33,7 @@ function Stories(): JSX.Element {
   const [stories, setStories] = useState<any>([]);
   const [followed, setFollowed] = useState<any>([]);
   const [uploadedStoryURL, setUploadedStoryURL] = useState<string>("");
-  const [uploadedStory, setUploadedStory] = useState<File>();
+  const [uploadedStory, setUploadedStory] = useState<File | Blob>();
   const [disable, setDisable] = useState<boolean>(false);
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
   const firstName = useSelector(
@@ -111,6 +112,18 @@ function Stories(): JSX.Element {
     navigate(0);
   }
 
+  function compressImg(file: any) {
+    // eslint-disable-next-line no-new
+    new Compressor(file, {
+      quality: 0.6,
+      success: (compressedResult) => {
+        setUploadedStory(compressedResult);
+      },
+    });
+    setUploadedStoryURL(URL.createObjectURL(file));
+    setOpenModal(true);
+  }
+
   return (
     <>
       <Box
@@ -174,11 +187,7 @@ function Stories(): JSX.Element {
                     style={{ display: "none" }}
                     onChange={(event) => {
                       if (event.target.files) {
-                        setUploadedStoryURL(
-                          URL.createObjectURL(event.target.files[0])
-                        );
-                        setUploadedStory(event.target.files[0]);
-                        setOpenModal(true);
+                        compressImg(event.target.files[0]);
                       }
                     }}
                   />

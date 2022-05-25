@@ -2,7 +2,7 @@
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState } from "react";
 import { db } from "utils/firebaseConfig";

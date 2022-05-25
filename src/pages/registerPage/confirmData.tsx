@@ -5,15 +5,16 @@ import styles from "./registerPage.module.scss";
 
 function ConfirmData(props: any): JSX.Element {
   const navigate = useNavigate();
+
   function confirmData() {
     const userData = { ...props.userInfo };
-    navigate("/");
 
     if (props.uploadedAvatar) {
       signUp(userData, props.uploadedAvatar);
     } else {
       signUp(userData, undefined);
     }
+    navigate("/");
   }
 
   return (

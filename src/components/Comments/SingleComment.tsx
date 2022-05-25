@@ -10,7 +10,13 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import List from "@mui/material/List";
 import { useState, useEffect } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { query, where, orderBy, collection, getDocs } from "firebase/firestore";
+import {
+  query,
+  where,
+  orderBy,
+  collection,
+  getDocs,
+} from "firebase/firestore/lite";
 import { likeHandlerComments } from "utils/postSettings/likeHandler";
 import { getUserAvatar } from "utils/userSettings/userAuth";
 import { db } from "utils/firebaseConfig";

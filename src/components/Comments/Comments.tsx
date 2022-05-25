@@ -1,4 +1,10 @@
-import { query, where, orderBy, collection, getDocs } from "firebase/firestore";
+import {
+  query,
+  where,
+  orderBy,
+  collection,
+  getDocs,
+} from "firebase/firestore/lite";
 import { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import { db } from "utils/firebaseConfig";

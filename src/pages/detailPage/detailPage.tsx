@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore/lite";
 import { useState, useEffect } from "react";
 import PostCard from "components/PostCard/PostCard";
 import Comments from "components/Comments/Comments";

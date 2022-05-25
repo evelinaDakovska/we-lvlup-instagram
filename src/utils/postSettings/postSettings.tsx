@@ -7,7 +7,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import {
   ref,
   uploadBytes,
@@ -18,7 +18,7 @@ import {
 import { db, storage } from "../firebaseConfig";
 
 export async function addSinglePost(
-  photo: File,
+  photo: File | Blob,
   description: string,
   url: string,
   userAvatar: string,
@@ -66,7 +66,7 @@ export async function addSinglePost(
 }
 
 export async function addSingleStory(
-  photo: File,
+  photo: File | Blob,
   userAvatar: string,
   userId: string,
   firstName: string,

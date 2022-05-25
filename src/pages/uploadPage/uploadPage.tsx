@@ -3,16 +3,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
+import Compressor from "compressorjs";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { addSinglePost } from "utils/postSettings/postSettings";
 import styles from "./uploadPage.module.scss";
 
 function UploadPage(): JSX.Element {
   const [uploadedPhotoURL, setUploadedPhotoURL] = useState<string>("");
-  const [uploadedPhoto, setUploadedPhoto] = useState<File>();
+  const [uploadedPhoto, setUploadedPhoto] = useState<File | Blob>();
   const [description, setDescription] = useState<string>();
   const [disable, setDisable] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
@@ -20,11 +21,10 @@ function UploadPage(): JSX.Element {
     (state: RootStateOrAny) => state.auth.firstName
   );
   const lastName = useSelector((state: RootStateOrAny) => state.auth.lastName);
-  const [loading, setLoading] = useState(false);
 
   async function uploadHandler() {
     if (uploadedPhoto && description && uploadedPhotoURL) {
-      setLoading(true);
+      setIsLoading(true);
       setDisable(true);
       await addSinglePost(
         uploadedPhoto,
@@ -42,10 +42,21 @@ function UploadPage(): JSX.Element {
     navigate("/");
   }
 
+  function compressImg(file: any) {
+    // eslint-disable-next-line no-new
+    new Compressor(file, {
+      quality: 0.6,
+      success: (compressedResult) => {
+        setUploadedPhoto(compressedResult);
+      },
+    });
+    setUploadedPhotoURL(URL.createObjectURL(file));
+  }
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentContainer}>
-        {uploadedPhotoURL && (
+        {uploadedPhoto && (
           <>
             {!uploadedPhoto!.type.includes("video") ? (
               <img
@@ -59,6 +70,7 @@ function UploadPage(): JSX.Element {
               </video>
             )}
             <TextField
+              type="text"
               label="Description"
               id="description"
               variant="outlined"
@@ -75,41 +87,45 @@ function UploadPage(): JSX.Element {
                 setDescription(event.target.value);
               }}
             />
-            <LoadingButton
-              onClick={uploadHandler}
-              loading={loading}
-              disabled={disable}
-              loadingIndicator="Loading..."
-              variant="contained"
-              sx={{
-                width: "10%",
-                "@media (max-width: 768px)": {
-                  width: "60%",
-                },
-              }}
-            >
-              Upload
-            </LoadingButton>
+            {!isLoading ? (
+              <Button
+                onClick={uploadHandler}
+                disabled={disable}
+                variant="contained"
+                sx={{
+                  width: "20%",
+                  "@media (max-width: 768px)": {
+                    width: "60%",
+                  },
+                }}
+              >
+                Upload
+              </Button>
+            ) : null}
           </>
         )}
-        <Button variant="text">
-          <label>
-            Select Photo
-            <input
-              type="file"
-              name="myAvatar"
-              style={{ display: "none" }}
-              onChange={(event) => {
-                if (event.target.files) {
-                  setUploadedPhotoURL(
-                    URL.createObjectURL(event.target.files[0])
-                  );
-                  setUploadedPhoto(event.target.files[0]);
-                }
-              }}
-            />
-          </label>
-        </Button>
+        {!isLoading ? (
+          <Button variant="text">
+            <label>
+              Select Photo
+              <input
+                type="file"
+                name="myAvatar"
+                style={{ display: "none" }}
+                onChange={(event) => {
+                  if (event.target.files) {
+                    compressImg(event.target.files[0]);
+                  }
+                }}
+              />
+            </label>
+          </Button>
+        ) : null}
+        {isLoading ? (
+          <div style={{ marginTop: "3%" }}>
+            <span className={styles.loader} />{" "}
+          </div>
+        ) : null}
       </div>
     </div>
   );
