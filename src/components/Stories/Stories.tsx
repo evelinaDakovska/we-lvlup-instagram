@@ -227,17 +227,19 @@ function Stories(): JSX.Element {
               maxHeight: "70%",
             }}
           >
-            {!uploadedStory!.type.includes("video") ? (
-              <img
-                className={styles.uploadedPhoto}
-                src={uploadedStoryURL}
-                alt="avatar"
-              />
-            ) : (
-              <video className={styles.uploadedPhoto} controls>
-                <source src={uploadedStoryURL} />
-              </video>
-            )}
+            {uploadedStory ? (
+              !uploadedStory.type.includes("video") ? (
+                <img
+                  className={styles.uploadedPhoto}
+                  src={uploadedStoryURL}
+                  alt="avatar"
+                />
+              ) : (
+                <video className={styles.uploadedPhoto} controls>
+                  <source src={uploadedStoryURL} />
+                </video>
+              )
+            ) : null}
             <Button onClick={addNewStories} disabled={disable}>
               Upload
             </Button>

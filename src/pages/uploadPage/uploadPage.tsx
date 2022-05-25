@@ -122,7 +122,7 @@ function UploadPage(): JSX.Element {
           </Button>
         ) : null}
         {isLoading ? (
-          <div style={{ marginTop: "3%" }}>
+          <div style={{ marginTop: "2%" }}>
             <span className={styles.loader} />{" "}
           </div>
         ) : null}
