@@ -2,21 +2,25 @@
  */
 import { RootStateOrAny, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useLayoutEffect, useEffect, lazy, Suspense } from "react";
 import "./App.scss";
-import Header from "components/Header/Header";
-import Footer from "components/Footer/Footer";
-import HeaderBigScreen from "components/Header/HeaderBigScreen";
-import ProfilePage from "./pages/profilePage/profilePage";
-import DetailPage from "./pages/detailPage/detailPage";
-import UserStartPage from "./pages/onStartPageUser/onStartPageUser";
-import GuestStartPage from "./pages/onStartPageGuest/onStartPageGuest";
-import Register from "./pages/registerPage/registerPage";
-import UploadPage from "./pages/uploadPage/uploadPage";
+
+const Header = lazy(() => import("components/Header/Header"));
+const Footer = lazy(() => import("components/Footer/Footer"));
+const HeaderBigScreen = lazy(() => import("components/Header/HeaderBigScreen"));
+const ProfilePage = lazy(() => import("./pages/profilePage/profilePage"));
+const DetailPage = lazy(() => import("./pages/detailPage/detailPage"));
+const UserStartPage = lazy(
+  () => import("./pages/onStartPageUser/onStartPageUser")
+);
+const GuestStartPage = lazy(
+  () => import("./pages/onStartPageGuest/onStartPageGuest")
+);
+const Register = lazy(() => import("./pages/registerPage/registerPage"));
+const UploadPage = lazy(() => import("./pages/uploadPage/uploadPage"));
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
-  /*   const user = false; */
   const isAuth = useSelector((state: RootStateOrAny) => state.auth.isAuth);
   const [widthDimensions, setWidthDimensions] = useState(window.innerWidth);
   const [smallScreen, setSmallScreen] = useState(true);
@@ -42,23 +46,25 @@ function App() {
 
   return (
     <div className="App">
-      {isAuth ? smallScreen ? <Header /> : <HeaderBigScreen /> : null}
-      <Routes>
-        {isAuth ? (
-          <>
-            <Route path="/" element={<UserStartPage />} />
-            <Route path="/upload" element={<UploadPage />} />
-            <Route path="/profile/:profileUserId" element={<ProfilePage />} />
-            <Route path="/details/:postId" element={<DetailPage />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<GuestStartPage />} />
-            <Route path="/register" element={<Register />} />
-          </>
-        )}
-      </Routes>
-      {isAuth ? smallScreen ? <Footer /> : null : null}
+      <Suspense fallback={<div>Loading...</div>}>
+        {isAuth ? smallScreen ? <Header /> : <HeaderBigScreen /> : null}
+        <Routes>
+          {isAuth ? (
+            <>
+              <Route path="/" element={<UserStartPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/profile/:profileUserId" element={<ProfilePage />} />
+              <Route path="/details/:postId" element={<DetailPage />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<GuestStartPage />} />
+              <Route path="/register" element={<Register />} />
+            </>
+          )}
+        </Routes>
+        {isAuth ? smallScreen ? <Footer /> : null : null}
+      </Suspense>
     </div>
   );
 }
