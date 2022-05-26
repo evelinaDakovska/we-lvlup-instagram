@@ -1,10 +1,8 @@
 import AppBar from "@mui/material/AppBar/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import SearchIcon from "@mui/icons-material/Search";
 import CottageIcon from "@mui/icons-material/Cottage";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Avatar from "@mui/material/Avatar";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -34,14 +32,8 @@ function Footer(): JSX.Element {
         <IconButton onClick={() => navigate("/")}>
           <CottageIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
-        <IconButton>
-          <SearchIcon fontSize="medium" sx={{ color: "#000000" }} />
-        </IconButton>
         <IconButton onClick={() => navigate("/upload")}>
           <AddCircleOutlineIcon fontSize="medium" sx={{ color: "#000000" }} />
-        </IconButton>
-        <IconButton>
-          <FavoriteBorderIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
         <IconButton
           onClick={() => navigate(`/profile/${userId}`)}
