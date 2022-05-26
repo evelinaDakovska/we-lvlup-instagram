@@ -22,23 +22,22 @@ import styles from "./PostCard.module.scss";
 function PostCard(props: any): JSX.Element {
   const navigate = useNavigate();
   const [isHomePage, setIsHomePage] = useState<boolean>(true);
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [avatar, setAvatar] = useState("");
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [likeNamesPost, setLikeNamesPost] = useState<Array<string>>([]);
   const [likes, setLikes] = useState<Array<string>>([]);
-  const [avatar, setAvatar] = useState("");
   const current = props.postData;
   const fileType = current.fileMeta;
-  // eslint-disable-next-line prefer-destructuring
-  const postId = props.postId;
+  const postOwner = current.userId;
+  const { postId } = props;
   const currentUserId = useSelector(
     (state: RootStateOrAny) => state.auth.userId
   );
   const currentUserName = `${useSelector(
     (state: RootStateOrAny) => state.auth.firstName
   )} ${useSelector((state: RootStateOrAny) => state.auth.lastName)}`;
-  const postOwner = current.userId;
 
   useEffect(() => {
     if (window.location.pathname.includes("/details")) {
@@ -49,6 +48,9 @@ function PostCard(props: any): JSX.Element {
       setAvatar(currentAvatar);
     };
     getAvatar();
+  }, []);
+
+  useEffect(() => {
     const isLiked = async (): Promise<void> => {
       const postRef = doc(db, "posts", postId);
       const postSnap = await getDoc(postRef);

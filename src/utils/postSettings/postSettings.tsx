@@ -21,7 +21,6 @@ export async function addSinglePost(
   photo: File | Blob,
   description: string,
   url: string,
-  userAvatar: string,
   userId: string,
   firstName: string,
   lastName: string
@@ -48,7 +47,6 @@ export async function addSinglePost(
     description,
     userId,
     userNames: `${firstName} ${lastName}`,
-    userAvatar,
     dislikes: [],
     likes: [],
     commentsCount: 0,

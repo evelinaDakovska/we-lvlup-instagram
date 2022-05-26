@@ -6,6 +6,8 @@ import styles from "./registerPage.module.scss";
 function SetNames(props: any): JSX.Element {
   const [firstName, setFName] = useState("");
   const [lastName, setLName] = useState("");
+  const [alertFN, setAlertFN] = useState<boolean>(false);
+  const [alertLN, setAlertLN] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.userInfo.firstName) {
@@ -23,14 +25,16 @@ function SetNames(props: any): JSX.Element {
 
   function validateData() {
     if (!firstName) {
-      alert("Please Enter First Name");
+      setAlertFN(true);
       return;
     }
     if (!lastName) {
-      alert("Please Enter Last Name");
+      setAlertFN(false);
+      setAlertLN(true);
       return;
     }
-
+    setAlertFN(false);
+    setAlertLN(false);
     nextPage();
   }
 
@@ -45,6 +49,11 @@ function SetNames(props: any): JSX.Element {
           setFName(event.target.value);
         }}
       />
+      {alertFN ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Please Enter First Name
+        </div>
+      ) : null}
       <TextField
         id="lastName"
         label="Enter last name"
@@ -54,6 +63,11 @@ function SetNames(props: any): JSX.Element {
           setLName(event.target.value);
         }}
       />
+      {alertLN ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Please Enter Last Name
+        </div>
+      ) : null}
       <Button variant="contained" onClick={validateData}>
         Next
       </Button>

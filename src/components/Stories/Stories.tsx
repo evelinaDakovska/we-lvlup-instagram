@@ -27,6 +27,7 @@ import { addSingleStory } from "utils/postSettings/postSettings";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";
 import styles from "./Stories.module.scss";
+import { getUserAvatar } from "utils/userSettings/userAuth";
 
 function Stories(): JSX.Element {
   const [openModal, setOpenModal] = useState(false);
@@ -35,12 +36,20 @@ function Stories(): JSX.Element {
   const [uploadedStoryURL, setUploadedStoryURL] = useState<string>("");
   const [uploadedStory, setUploadedStory] = useState<File | Blob>();
   const [disable, setDisable] = useState<boolean>(false);
+  const [userAvatar, setUserAvatar] = useState("");
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
   const firstName = useSelector(
     (state: RootStateOrAny) => state.auth.firstName
   );
-  const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getAvatar = async () => {
+      const currentAvatar = await getUserAvatar(userId);
+      setUserAvatar(currentAvatar);
+    };
+    getAvatar();
+  }, []);
 
   useEffect(() => {
     const getFollowers = async (): Promise<void> => {
@@ -57,6 +66,7 @@ function Stories(): JSX.Element {
     };
     getFollowers();
   }, []);
+
   useEffect(() => {
     const getStories = async (): Promise<void> => {
       const allStories: Array<any> = [];

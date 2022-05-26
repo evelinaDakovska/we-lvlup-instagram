@@ -207,24 +207,30 @@ function ProfilePage(): JSX.Element {
                   }
                 }}
               />
-              <label htmlFor="avatar">
+              <label
+                htmlFor="avatar"
+                style={{ display: "flex", flexDirection: "column" }}
+              >
                 <IconButton component="span" aria-label="upload picture">
                   <Avatar
                     src={currentAvatar}
                     sx={{ width: "80px", height: "80px" }}
                   />
                 </IconButton>
+                {uploadedAvatar && (
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      changeAvatarFunc();
+                    }}
+                    sx={{
+                      height: "20px",
+                    }}
+                  >
+                    Change
+                  </Button>
+                )}
               </label>
-              {uploadedAvatar && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    changeAvatarFunc();
-                  }}
-                >
-                  Upload new avatar
-                </button>
-              )}
               <div style={{ fontWeight: "bold" }}>
                 {userData.firstName} {userData.lastName}
               </div>

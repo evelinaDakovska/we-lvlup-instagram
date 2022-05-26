@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import Compressor from "compressorjs";
@@ -11,11 +11,11 @@ import styles from "./uploadPage.module.scss";
 function UploadPage(): JSX.Element {
   const [uploadedPhotoURL, setUploadedPhotoURL] = useState<string>("");
   const [uploadedPhoto, setUploadedPhoto] = useState<File | Blob>();
-  const [description, setDescription] = useState<string>();
+  const description = useRef<HTMLInputElement>();
   const [disable, setDisable] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState<boolean>(false);
   const navigate = useNavigate();
-  const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
   const firstName = useSelector(
     (state: RootStateOrAny) => state.auth.firstName
@@ -23,20 +23,20 @@ function UploadPage(): JSX.Element {
   const lastName = useSelector((state: RootStateOrAny) => state.auth.lastName);
 
   async function uploadHandler() {
-    if (uploadedPhoto && description && uploadedPhotoURL) {
+    if (uploadedPhoto && description?.current!.value && uploadedPhotoURL) {
+      setAlert(false);
       setIsLoading(true);
       setDisable(true);
       await addSinglePost(
         uploadedPhoto,
-        description,
+        description.current!.value,
         uploadedPhotoURL,
-        userAvatar,
         userId,
         firstName,
         lastName
       );
     } else {
-      alert("Please add file and description");
+      setAlert(true);
       return;
     }
     navigate("/");
@@ -74,7 +74,6 @@ function UploadPage(): JSX.Element {
               label="Description"
               id="description"
               variant="outlined"
-              value={description}
               sx={{
                 width: "50%",
                 marginTop: "1%",
@@ -83,24 +82,29 @@ function UploadPage(): JSX.Element {
                   width: "80%",
                 },
               }}
-              onChange={(event) => {
-                setDescription(event.target.value);
-              }}
+              inputRef={description}
             />
             {!isLoading ? (
-              <Button
-                onClick={uploadHandler}
-                disabled={disable}
-                variant="contained"
-                sx={{
-                  width: "20%",
-                  "@media (max-width: 768px)": {
-                    width: "60%",
-                  },
-                }}
-              >
-                Upload
-              </Button>
+              <>
+                {alert ? (
+                  <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+                    Please add file and description
+                  </div>
+                ) : null}
+                <Button
+                  onClick={uploadHandler}
+                  disabled={disable}
+                  variant="contained"
+                  sx={{
+                    width: "20%",
+                    "@media (max-width: 768px)": {
+                      width: "60%",
+                    },
+                  }}
+                >
+                  Upload
+                </Button>
+              </>
             ) : null}
           </>
         )}

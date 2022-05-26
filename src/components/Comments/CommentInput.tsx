@@ -4,14 +4,13 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { useState } from "react";
+import { useRef } from "react";
 import { db } from "utils/firebaseConfig";
 
 function CommentInput(props: any): JSX.Element {
-  const [comment, setComment] = useState("");
+  const comment = useRef<HTMLInputElement>();
   const parentCommentId = props.parentCommentId ? props.parentCommentId : null;
   const userId = useSelector((state: RootStateOrAny) => state.auth.userId);
-  const userAvatar = useSelector((state: RootStateOrAny) => state.auth.avatar);
   const firstName = useSelector(
     (state: RootStateOrAny) => state.auth.firstName
   );
@@ -19,21 +18,20 @@ function CommentInput(props: any): JSX.Element {
 
   async function postComment() {
     const commentData = {
-      comment,
+      comment: comment.current!.value,
       likes: [],
       parentCommentId,
       postId: props.postId,
       timestamp: serverTimestamp(),
-      userAvatar,
       userId,
       firstName,
       lastName,
     };
     await addDoc(collection(db, "comments"), commentData);
-    setComment("");
     if (props.setAllComments) {
       props.setAllComments((prev: Array<any>) => [commentData, ...prev]);
     }
+    comment.current!.value = "";
   }
 
   return (
@@ -53,10 +51,7 @@ function CommentInput(props: any): JSX.Element {
         sx={{ ml: 1, flex: 1 }}
         placeholder="Add comment"
         inputProps={{ "aria-label": "Add comment" }}
-        value={comment}
-        onChange={(event) => {
-          setComment(event.target.value);
-        }}
+        inputRef={comment}
       />
       <IconButton onClick={postComment} sx={{ p: "10px", fontSize: "15px" }}>
         Post comment

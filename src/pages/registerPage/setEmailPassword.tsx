@@ -4,6 +4,12 @@ import styles from "./registerPage.module.scss";
 
 function SetEmailPassword(props: any): JSX.Element {
   const [email, setEmail] = useState("");
+  const [alertEmail, setAlertEmail] = useState<boolean>(false);
+  const [alertInvalidEmail, setAlertInvalidEmail] = useState<boolean>(false);
+  const [alertPassword, setAlertPassword] = useState<boolean>(false);
+  const [alertInvalidPassword, setAlertInvalidPassword] =
+    useState<boolean>(false);
+
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -23,21 +29,29 @@ function SetEmailPassword(props: any): JSX.Element {
 
   function validateData() {
     if (!email) {
-      alert("Please Enter Email ID");
+      setAlertEmail(true);
       return;
     }
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      alert("Invalid email address");
+      setAlertEmail(false);
+      setAlertInvalidEmail(true);
       return;
     }
     if (!password) {
-      alert("Please Enter Password");
+      setAlertInvalidEmail(false);
+      setAlertPassword(true);
       return;
     }
     if (password.length < 6) {
-      alert("Your password must contain at least 6 characters");
+      setAlertInvalidPassword(true);
+      setAlertPassword(false);
       return;
     }
+
+    setAlertEmail(false);
+    setAlertInvalidEmail(false);
+    setAlertPassword(false);
+    setAlertInvalidPassword(false);
 
     nextPage();
   }
@@ -63,6 +77,16 @@ function SetEmailPassword(props: any): JSX.Element {
           setEmail(event.target.value);
         }}
       />
+      {alertEmail ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Please Enter Email ID
+        </div>
+      ) : null}
+      {alertInvalidEmail ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Invalid email address
+        </div>
+      ) : null}
 
       <div className={styles.mailContainer}>
         <Chip
@@ -96,6 +120,17 @@ function SetEmailPassword(props: any): JSX.Element {
           setPassword(event.target.value);
         }}
       />
+      {alertPassword ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Please Enter Password
+        </div>
+      ) : null}
+      {alertInvalidPassword ? (
+        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+          Your password must contain at least 6 characters
+        </div>
+      ) : null}
+
       <Button variant="contained" onClick={validateData}>
         Next
       </Button>

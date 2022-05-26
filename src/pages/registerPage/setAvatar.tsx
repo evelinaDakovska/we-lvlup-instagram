@@ -11,6 +11,7 @@ function SetAvatar(props: any): JSX.Element {
   const [selectedAvatar, setSelectedAvatar] = useState<string>();
   const [uploadedAvatar, setUploadedAvatar] = useState<File>();
   const [uploadedURL, setUploadedURL] = useState<string>();
+  const [alert, setAlert] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.userInfo.avatar) {
@@ -36,9 +37,10 @@ function SetAvatar(props: any): JSX.Element {
 
   function nextPage() {
     if (!selectedAvatar) {
-      alert("Please select profile picture");
+      setAlert(true);
       return;
     }
+    setAlert(false);
     props.onNextStep(props.navigationStep + 1);
     props.setUserInformation({ avatar: selectedAvatar });
     props.setUploadedAvatar(uploadedAvatar);
@@ -96,6 +98,11 @@ function SetAvatar(props: any): JSX.Element {
           Next
         </Button>
       </div>
+      {alert ? (
+        <div style={{ backgroundColor: "#fbad50", marginRight: "2%" }}>
+          Please select profile picture
+        </div>
+      ) : null}
     </div>
   );
 }
