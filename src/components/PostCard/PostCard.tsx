@@ -8,6 +8,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import Tooltip from "@mui/material/Tooltip";
+import Skeleton from "@mui/material/Skeleton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -23,6 +24,7 @@ function PostCard(props: any): JSX.Element {
   const [isHomePage, setIsHomePage] = useState<boolean>(true);
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [dislikedPost, setDislikedPost] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
   const [likeNamesPost, setLikeNamesPost] = useState<Array<string>>([]);
   const [likes, setLikes] = useState<Array<string>>([]);
   const [avatar, setAvatar] = useState("");
@@ -75,6 +77,7 @@ function PostCard(props: any): JSX.Element {
     };
     isLiked();
     getLikeNames();
+    setLoaded(true);
   }, []);
 
   function likeBtnHandler(action: string) {
@@ -145,19 +148,23 @@ function PostCard(props: any): JSX.Element {
           {current.userNames}
         </h4>
       </div>
-      {!fileType.includes("video") ? (
-        <img
-          src={current.url}
-          alt="post"
-          className={styles.image}
-          onClick={() => {
-            isHomePage ? navigate(`/details/${postId}`) : null;
-          }}
-        />
+      {loaded ? (
+        !fileType.includes("video") ? (
+          <img
+            src={current.url}
+            alt="post"
+            className={styles.image}
+            onClick={() => {
+              isHomePage ? navigate(`/details/${postId}`) : null;
+            }}
+          />
+        ) : (
+          <video className={styles.image} controls>
+            <source src={current.url} />
+          </video>
+        )
       ) : (
-        <video className={styles.image} controls>
-          <source src={current.url} />
-        </video>
+        <Skeleton variant="rectangular" width={210} height={118} />
       )}
       <div className={styles.optionsContainer}>
         <div className={styles.options}>
