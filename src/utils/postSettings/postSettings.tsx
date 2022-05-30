@@ -38,8 +38,8 @@ export async function addSinglePost(
     .then((metadata) => {
       fileMeta = metadata.contentType;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
+      /*       console.log(error); */
     });
 
   await addDoc(collection(db, "posts"), {
@@ -83,8 +83,8 @@ export async function addSingleStory(
     .then((metadata) => {
       fileMeta = metadata.contentType;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
+      /*       console.log(error); */
     });
 
   await addDoc(collection(db, "stories"), {

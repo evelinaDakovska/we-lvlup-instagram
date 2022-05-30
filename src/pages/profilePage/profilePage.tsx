@@ -238,6 +238,7 @@ function ProfilePage(): JSX.Element {
             <Button
               variant="contained"
               onClick={onSignOut}
+              aria-label="logout"
               sx={{
                 width: "40px",
                 height: "40px",
@@ -256,6 +257,7 @@ function ProfilePage(): JSX.Element {
               <Avatar
                 src={currentAvatar}
                 sx={{ width: "80px", height: "80px" }}
+                alt="User avatar"
               />
               <div style={{ fontWeight: "bold", paddingLeft: "5%" }}>
                 {userData.firstName} {userData.lastName}

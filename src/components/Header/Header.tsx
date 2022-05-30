@@ -31,7 +31,7 @@ function Header(): JSX.Element {
             <img
               src={`${process.env.PUBLIC_URL} /title-img.png`}
               alt="logo"
-              style={{ width: "150px" }}
+              style={{ width: "150px", height: "auto" }}
             />
           </Typography>
           <SendIcon />

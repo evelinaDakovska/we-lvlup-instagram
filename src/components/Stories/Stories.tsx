@@ -24,10 +24,10 @@ import {
   doc,
 } from "firebase/firestore/lite";
 import { addSingleStory } from "utils/postSettings/postSettings";
+import { getUserAvatar } from "utils/userSettings/userAuth";
 import { db } from "../../utils/firebaseConfig";
 import UserStories from "./UserStories";
 import styles from "./Stories.module.scss";
-import { getUserAvatar } from "utils/userSettings/userAuth";
 
 function Stories(): JSX.Element {
   const [openModal, setOpenModal] = useState(false);

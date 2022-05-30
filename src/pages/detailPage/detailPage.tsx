@@ -19,7 +19,7 @@ function DetailPage(): JSX.Element {
         if (docSnap.exists()) {
           setPostData(docSnap.data());
         } else {
-          console.log("No such document!");
+          /*     console.log("No such document!"); */
         }
       }
     };

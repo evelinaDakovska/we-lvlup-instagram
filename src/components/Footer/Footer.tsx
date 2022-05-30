@@ -29,15 +29,16 @@ function Footer(): JSX.Element {
       sx={{ top: "auto", bottom: 0, backgroundColor: "#ffffff" }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-around" }}>
-        <IconButton onClick={() => navigate("/")}>
+        <IconButton onClick={() => navigate("/")} aria-label="home">
           <CottageIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
-        <IconButton onClick={() => navigate("/upload")}>
+        <IconButton onClick={() => navigate("/upload")} aria-label="upload">
           <AddCircleOutlineIcon fontSize="medium" sx={{ color: "#000000" }} />
         </IconButton>
         <IconButton
           onClick={() => navigate(`/profile/${userId}`)}
           sx={{ p: 0 }}
+          aria-label="profile"
         >
           <Avatar src={avatar} alt="User avatar" />
         </IconButton>

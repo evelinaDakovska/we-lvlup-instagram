@@ -49,8 +49,8 @@ export function signUp(userData: AuthState, uploadedAvatar: File | undefined) {
       const updatedUserData = { ...userData, avatar: fileURL, userId };
       dispatch(login(updatedUserData));
     })
-    .catch((error: any) => {
-      console.log(error.message);
+    .catch(() => {
+      /*       console.log(error.message); */
     });
 }
 
@@ -59,8 +59,8 @@ export function signOutFunc() {
     .then(() => {
       dispatch(logout());
     })
-    .catch((error: any) => {
-      console.log(error.message);
+    .catch(() => {
+      /*       console.log(error.message); */
     });
 }
 
@@ -73,8 +73,8 @@ export function signIn(email: string, password: string) {
       const data = { ...docSnap.data(), userId };
       dispatch(login(data));
     })
-    .catch((error) => {
-      alert(error.message);
+    .catch(() => {
+      /*       alert(error.message); */
     });
 }
 
@@ -128,8 +128,8 @@ export function signInGoogle() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       onSignInWithProvider(result, credential, false);
     })
-    .catch((error) => {
-      console.log(error.message);
+    .catch(() => {
+      /*       console.log(error.message); */
     });
 }
 
@@ -140,8 +140,8 @@ export function signInFacebook() {
       const credential = FacebookAuthProvider.credentialFromResult(result);
       onSignInWithProvider(result, credential, true);
     })
-    .catch((error) => {
-      console.log(error.message);
+    .catch(() => {
+      /*       console.log(error.message); */
     });
 }
 
