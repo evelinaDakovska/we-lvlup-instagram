@@ -114,6 +114,7 @@ function PostCard(props: any): JSX.Element {
         await updateDoc(userRef, {
           postsCount: userPosts,
         });
+        navigate("/");
         navigate(0);
       }
     }

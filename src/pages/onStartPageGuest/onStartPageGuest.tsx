@@ -61,13 +61,6 @@ function GuestStartPage(): JSX.Element {
             setPassword(event.target.value);
           }}
         />
-        <Link
-          href="/"
-          underline="hover"
-          sx={{ marginTop: "5%", paddingLeft: "50%" }}
-        >
-          Forgot password?
-        </Link>
         <Button variant="contained" onClick={loginFunc}>
           Log In
         </Button>

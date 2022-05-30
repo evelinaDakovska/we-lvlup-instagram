@@ -1,5 +1,4 @@
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import SendIcon from "@mui/icons-material/Send";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -48,7 +47,6 @@ function HeaderBigScreen(): JSX.Element {
               sx={{ cursor: "pointer" }}
               onClick={() => navigate("/upload")}
             />
-            <SendIcon />
             <IconButton
               onClick={() => navigate(`/profile/${userId}`)}
               sx={{ p: 0 }}

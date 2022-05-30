@@ -67,7 +67,7 @@ function SetEmailPassword(props: any): JSX.Element {
   }
 
   return (
-    <form className={styles.firstPartRegister}>
+    <form className={styles.firstPartRegister} autoComplete="new-password">
       <TextField
         label="Email"
         id="emailField"
