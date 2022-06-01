@@ -48,6 +48,7 @@ function GuestStartPage(): JSX.Element {
       <form action="" className={styles.loginForm}>
         <TextField
           label="Username"
+          sx={{ padding: "0" }}
           margin="dense"
           onChange={(event) => {
             setEmail(event.target.value);
@@ -57,6 +58,7 @@ function GuestStartPage(): JSX.Element {
           label="Password"
           margin="dense"
           type="password"
+          sx={{ padding: "0" }}
           onChange={(event) => {
             setPassword(event.target.value);
           }}

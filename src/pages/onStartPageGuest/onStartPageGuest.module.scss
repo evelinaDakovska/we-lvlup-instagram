@@ -1,5 +1,5 @@
 .loginContainer {
-  width: 40%;
+  width: 20%;
   height: 100%;
   color: grey;
   .alternativeLogin,
@@ -22,6 +22,12 @@
       color: white;
     }
   }
+  @media (max-width: 1500px) {
+    width: 30%;
+  }
+  @media (max-width: 1200px) {
+    width: 40%;
+  }
   @media (max-width: 768px) {
     width: 70%;
   }
@@ -42,4 +48,8 @@
 
 .signUp {
   text-align: center;
+}
+
+fieldset[class^="MuiOutlinedInput-notchedOutline"] {
+  padding: 0;
 }

@@ -250,9 +250,13 @@ function Stories(): JSX.Element {
                 </video>
               )
             ) : null}
-            <Button onClick={addNewStories} disabled={disable}>
-              Upload
-            </Button>
+            {disable ? (
+              <div style={{ marginTop: "2%" }}>
+                <span className={styles.loader} />{" "}
+              </div>
+            ) : (
+              <Button onClick={addNewStories}>Upload</Button>
+            )}
           </Box>
         </Modal>
       ) : null}
