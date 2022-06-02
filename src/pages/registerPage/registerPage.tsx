@@ -65,6 +65,7 @@ function RegisterPage(): JSX.Element {
           userInfo={userInfo}
           setUserInformation={setUserInformation}
           setUploadedAvatar={setUploadedAvatar}
+          uploadedAvatar={uploadedAvatar}
         />
       ) : (
         <ConfirmData userInfo={userInfo} uploadedAvatar={uploadedAvatar} />

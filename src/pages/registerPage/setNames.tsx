@@ -50,9 +50,7 @@ function SetNames(props: any): JSX.Element {
         }}
       />
       {alertFN ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
-          Please Enter First Name
-        </div>
+        <div style={{ color: "red" }}>Please Enter First Name</div>
       ) : null}
       <TextField
         id="lastName"
@@ -64,9 +62,7 @@ function SetNames(props: any): JSX.Element {
         }}
       />
       {alertLN ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
-          Please Enter Last Name
-        </div>
+        <div style={{ color: "red" }}>Please Enter Last Name</div>
       ) : null}
       <Button variant="contained" onClick={validateData}>
         Next

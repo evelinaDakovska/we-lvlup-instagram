@@ -16,8 +16,22 @@ import styles from "./onStartPageGuest.module.scss";
 function GuestStartPage(): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alertEmail, setAlertEmail] = useState<boolean>(false);
+  const [alertPassword, setAlertPassword] = useState<boolean>(false);
 
   function loginFunc() {
+    if (!email) {
+      setAlertEmail(true);
+      return;
+    }
+    if (!password) {
+      setAlertEmail(false);
+      setAlertPassword(true);
+      return;
+    }
+    setAlertEmail(false);
+    setAlertPassword(false);
+
     signIn(email, password);
   }
 
@@ -54,6 +68,9 @@ function GuestStartPage(): JSX.Element {
             setEmail(event.target.value);
           }}
         />
+        {alertEmail ? (
+          <div style={{ color: "red" }}>Please Enter Email</div>
+        ) : null}
         <TextField
           label="Password"
           margin="dense"
@@ -63,6 +80,9 @@ function GuestStartPage(): JSX.Element {
             setPassword(event.target.value);
           }}
         />
+        {alertPassword ? (
+          <div style={{ color: "red" }}>Please Enter Password</div>
+        ) : null}
         <Button variant="contained" onClick={loginFunc}>
           Log In
         </Button>

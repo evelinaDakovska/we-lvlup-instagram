@@ -78,14 +78,10 @@ function SetEmailPassword(props: any): JSX.Element {
         }}
       />
       {alertEmail ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
-          Please Enter Email ID
-        </div>
+        <div style={{ color: "red" }}>Please Enter Email</div>
       ) : null}
       {alertInvalidEmail ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
-          Invalid email address
-        </div>
+        <div style={{ color: "red" }}>Invalid email address</div>
       ) : null}
 
       <div className={styles.mailContainer}>
@@ -121,12 +117,10 @@ function SetEmailPassword(props: any): JSX.Element {
         }}
       />
       {alertPassword ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
-          Please Enter Password
-        </div>
+        <div style={{ color: "red" }}>Please Enter Password</div>
       ) : null}
       {alertInvalidPassword ? (
-        <div style={{ backgroundColor: "#fbad50", marginTop: "1%" }}>
+        <div style={{ color: "red" }}>
           Your password must contain at least 6 characters
         </div>
       ) : null}
