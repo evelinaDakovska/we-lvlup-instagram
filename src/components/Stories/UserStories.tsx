@@ -67,8 +67,6 @@ function UserStories(props: any): JSX.Element {
         }}
       >
         <Avatar src={avatar} alt="User avatar" />
-        {/*         <div className={styles.storyTitle}>{data.userName}</div>
-         */}{" "}
       </IconButton>
       {openModal ? (
         <Modal

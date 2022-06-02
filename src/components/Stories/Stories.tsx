@@ -162,9 +162,9 @@ function Stories(): JSX.Element {
               padding: "0",
             }}
           >
-            <IconButton
-              sx={{
-                p: 0,
+            <div
+              style={{
+                padding: 0,
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
@@ -203,8 +203,8 @@ function Stories(): JSX.Element {
                   />
                 </label>
               </IconButton>
-              <div className={styles.storyTitle}>Your story</div>
-            </IconButton>
+              <div className={styles.storyTitle}>Add story</div>
+            </div>
             {Object.entries(stories).map(([key, value]) => (
               <UserStories storyData={value} userId={key} key={key} />
             ))}
