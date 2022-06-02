@@ -1,20 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { useState } from "react";
 import { signUp } from "../../utils/userSettings/userAuth";
 import styles from "./registerPage.module.scss";
 
 function ConfirmData(props: any): JSX.Element {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function confirmData() {
+  async function confirmData() {
     const userData = { ...props.userInfo };
-
-    if (props.uploadedAvatar) {
-      signUp(userData, props.uploadedAvatar);
-    } else {
-      signUp(userData, undefined);
+    setIsLoading(true);
+    function mycallback() {
+      navigate("/");
     }
-    navigate("/");
+    if (props.uploadedAvatar) {
+      await signUp(userData, props.uploadedAvatar, mycallback);
+    } else {
+      await signUp(userData, undefined, mycallback);
+    }
   }
 
   return (
@@ -30,9 +34,15 @@ function ConfirmData(props: any): JSX.Element {
           alt="avatar"
         />
       </div>
-      <Button variant="contained" type="submit" onClick={confirmData}>
-        Confirm
-      </Button>
+      {!isLoading ? (
+        <Button variant="contained" type="submit" onClick={confirmData}>
+          Confirm
+        </Button>
+      ) : (
+        <div style={{ marginTop: "2%" }}>
+          <span className={styles.loader} />{" "}
+        </div>
+      )}
     </div>
   );
 }

@@ -17,7 +17,11 @@ import { auth, db, storage } from "../firebaseConfig";
 import { login, AuthState, logout } from "../../store/auth";
 import { dispatch } from "../../store/index";
 
-export function signUp(userData: AuthState, uploadedAvatar: File | undefined) {
+export function signUp(
+  userData: AuthState,
+  uploadedAvatar: File | undefined,
+  mycallback: () => void
+) {
   const { email, password, firstName, lastName, avatar } = userData;
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential: any) => {
@@ -48,6 +52,7 @@ export function signUp(userData: AuthState, uploadedAvatar: File | undefined) {
       });
       const updatedUserData = { ...userData, avatar: fileURL, userId };
       dispatch(login(updatedUserData));
+      mycallback();
     })
     .catch(() => {
       /*       console.log(error.message); */
