@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import Modal from "@mui/material/Modal";
 import Badge from "@mui/material/Badge";
@@ -162,16 +163,8 @@ function Stories(): JSX.Element {
               padding: "0",
             }}
           >
-            <div
-              style={{
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                paddingRight: "3%",
-              }}
-            >
-              <IconButton>
+            <Tooltip title="Add story" arrow>
+              <IconButton sx={{ paddingRight: "3%" }}>
                 <label>
                   <Badge
                     overlap="circular"
@@ -203,8 +196,7 @@ function Stories(): JSX.Element {
                   />
                 </label>
               </IconButton>
-              <div className={styles.storyTitle}>Add story</div>
-            </div>
+            </Tooltip>
             {Object.entries(stories).map(([key, value]) => (
               <UserStories storyData={value} userId={key} key={key} />
             ))}
